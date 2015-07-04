@@ -1,6 +1,6 @@
 <?php
 
-	require 'src/autoload.php';
+	require 'bitphp/autoload.php';
 
     use \Bitphp\Base\MvcServer;
 
