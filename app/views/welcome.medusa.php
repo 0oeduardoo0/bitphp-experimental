@@ -35,7 +35,7 @@
 			<div class="col-md-8 col-md-offset-1">
 				<h3>
 					<span class="foo">#</span> &nbsp;
-					Bitphp is running in this magical land, with unicorns and rainbowns!
+					Bitphp is running in this magical land, with unicorns and rainbows!
 				</h3>
 				<h3>
 					<span class="foo">#</span> &nbsp;

@@ -1,0 +1,1 @@
+ :extends navbar.master:block user<p>Hola </p>:endblock 

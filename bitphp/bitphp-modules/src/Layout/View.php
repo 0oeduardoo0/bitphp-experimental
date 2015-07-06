@@ -42,14 +42,6 @@
 		 */
 		public function load($name) {
 
-			if(is_array($name)) {
-				foreach ($name as $other) {
-					$this->load($other);
-				}
-
-				return $this;
-			}
-
 			$file = Globals::get('base_path') . "/app/views/$name" . $this->mime;
 			if(false === file_exists($file)) {
 				$message  = "No se pudo cargar las vista '$name.' ";
