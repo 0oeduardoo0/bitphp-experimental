@@ -10,12 +10,7 @@
 
 		public function __index() {
 			$this->medusa
-				 ->load('child')
-				 ->with([
-				 	'name' => 'lalocura'
-				 ])
+				 ->load('welcome')
 				 ->draw();
-
-			#echo "<pre>", htmlentities($foo), "<pre>";
 		}
 	}

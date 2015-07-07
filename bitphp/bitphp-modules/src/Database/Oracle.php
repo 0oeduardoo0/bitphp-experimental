@@ -54,7 +54,6 @@
 
 		public function query($query) {
 			$this->statement = oci_parse($this->database, $query);
-			oci_execute($this->statement);
 			
 			if(!$this->statement) {
 				$exception = oci_error();
@@ -65,6 +64,10 @@
 		}
 
 		public function result() {
-			return oci_fetch_array($this->statement, OCI_ASSOC+OCI_RETURN_NULLS);
+			$result = array();
+
+			oci_execute($this->statement);
+			oci_fetch_all($this->statement, $result);
+			return $result;
 		}
 	}

@@ -4,5 +4,5 @@
 	"database.alias.uni": "dbumb",
 	"medusa.compress": true,
 	"cache.time": 15,
-	"cache": true
+	"cache": false
 }

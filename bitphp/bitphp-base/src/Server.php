@@ -37,6 +37,7 @@
 			#se define archivo de configuración
 			Config::load(Globals::get('base_path') . '/app/config.json');
 			$errorHandler = new Error();
+			$errorHandler->registre();
 		}
 
 		abstract public function run();

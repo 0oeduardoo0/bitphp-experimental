@@ -41,7 +41,7 @@
 				$content = $tokens[4][$i];
 
 				if(isset($this->blocks[$name])) {
-					if(0 !== preg_match(MT_PARENT, $content)) {
+					if(1 === preg_match(MT_PARENT, $content)) {
 						$this->blocks[$name] .= $content;
 						continue;
 					}
