@@ -24,7 +24,7 @@
 		 *					   que esta recibe.
 		 *	@return string ruta del archivo del cache
 		 */
-		private static function generateName($data) {
+		protected static function generateName($data) {
 			$label = json_encode($data);
 			$dir = Globals::get('base_path') . '/olimpus/cache/';
 			return $dir . md5($label) . '.lock';
@@ -48,6 +48,18 @@
 			if( null === $cachetime || !is_numeric($cachetime) )
 				$cachetime = 300; //senconds
 
+			return self::read($file);
+		}
+
+		/**
+		 *	Lee el contenido de un archivo en cache, si este existe
+		 *	y no ha sobrepasado el tiempo de vida
+		 *
+		 *	@param string $file Ruta del archivo a leer
+		 *	@return mixed contenido del archivo si extiste y no a expirado
+		 *				  false de lo contrario
+		 */
+		public static function read($file) {
 			if(file_exists($file)) {
 				if((fileatime($file) + $cachetime) >= time()) {
 					return file_get_contents($file);

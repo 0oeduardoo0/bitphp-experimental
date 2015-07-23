@@ -10,21 +10,19 @@
 	class Route {
 
 		private static function controller($uri) {
-			if(!empty($uri[0])) {
-				return $uri[0];
-			}
+			#main es el controlador por defecto
+			if(empty($uri[0]))
+				return 'main';
 
-			# main es el controlador por defecto
-			return 'main';
+			return $uri[0];
 		}
 
 		private static function action($uri) {
-			if(!empty($uri[1])) {
-				return $uri[1];
-			}
-
 			# __index es la accion por defecto
-			return '__index';
+			if(empty($uri[1]))
+				return '__index';
+
+			return $uri[1];
 		}
 
 		private static function uriParams($uri) {
@@ -42,6 +40,7 @@
 		}
 
 		public static function parse($request_uri) {
+			$request_uri = trim($request_uri, '/');
 			$request_uri = explode('/', $request_uri);
 
 			$result = [

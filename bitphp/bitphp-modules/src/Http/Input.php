@@ -30,7 +30,7 @@
 					return null;
 				}
 			} else {
-				$index = array_search($index, $_BITPHP['URI_PARAMS']);
+				$index = array_search($index, $parms);
 				$result = self::url($index + 1, $filter);
 			}
 

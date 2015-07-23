@@ -64,10 +64,10 @@
 		}
 
 		public function result() {
-			$result = array();
-
 			oci_execute($this->statement);
 			oci_fetch_all($this->statement, $result);
+
+			oci_free_statement($this->statement);
 			return $result;
 		}
 	}

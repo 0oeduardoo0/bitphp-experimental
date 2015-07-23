@@ -11,6 +11,8 @@
 	 */
 	class Globals {
 
+		protected static $variables;
+
 		/**
 		 *	Registra una variable en el ambito global
 		 *	tambien puede registrar varias variables pasando
@@ -20,7 +22,6 @@
 		 *	@param mixed $val valor de la variable
 		 */
 		public static function registre($var, $val = null) {
-			global $_BITPHP;
 
 			if(is_array($var)) {
 				foreach ($var as $name => $value) {
@@ -29,7 +30,7 @@
 				return;
 			}
 
-			$_BITPHP[$var] = $val;
+			self::$variables[$var] = $val;
 		}
 
 		/** 
@@ -39,8 +40,7 @@
 		 *	@return mixed null si la variable no esta registrada y su valor si existe
 		 */
 		public static function get($var) {
-			global $_BITPHP;
-			return isset($_BITPHP[$var]) ? $_BITPHP[$var] : null;
+			return isset(self::$variables[$var]) ? self::$variables[$var] : null;
 		}
 
 		/**
@@ -49,7 +49,6 @@
 		 *	@return array
 		 */
 		public static function all() {
-			global $_BITPHP;
-			return $_BITPHP;
+			return self::$variables;
 		}
 	}

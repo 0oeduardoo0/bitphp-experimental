@@ -2,8 +2,6 @@
 
 	namespace Bitphp\Core;
 
-	$_BITPHP_CONFIG = array();
-
 	/**
 	 *	Proporciona los metodos para leer el archivo de configuracion de
 	 *	la aplicacion
@@ -12,6 +10,8 @@
 	 */
 	class Config {
 
+		protected static $params;
+
 		/**
 		 *	verifica y carga el archivo
 		 *	de configuracion de la aplicacion
@@ -19,12 +19,11 @@
 		 *	@param string $file Ruta al archivo de configuracion
 		 */
 		public static function load($file) {
-			global $_BITPHP_CONFIG;
 
 			if( file_exists($file) ) {
 				$content = file_get_contents($file);
 				#usa la variable global para no cargar el archivo una y otra vez
-				$_BITPHP_CONFIG = json_decode($content, true);
+				self::$params = json_decode($content, true);
 			}
 		}
 
@@ -36,8 +35,18 @@
 		 *				  en caso de que este exista
 		 */
 		public static function param($index) {
-			global $_BITPHP_CONFIG;
-			return isset($_BITPHP_CONFIG[$index]) ? $_BITPHP_CONFIG[$index] : null;
+			return isset(self::$params[$index]) ? self::$params[$index] : null;
+		}
+
+		/**
+		 *	Setea un parametro de configuración en tiempo de ejecucion
+		 *
+		 *	@param string $index Nombre del parametro de configuracion
+		 *	@param string $value Valor del parametro de configuración
+		 *	@return void
+		 */
+		public static function set($index, $value) {
+			self::$params[$index] = $value;
 		}
 
 		/**
@@ -46,7 +55,6 @@
 		 *	@return array
 		 */
 		public static function all() {
-			global $_BITPHP_CONFIG;
-			return $_BITPHP_CONFIG;
+			return self::$params;
 		}
 	}

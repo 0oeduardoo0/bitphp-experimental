@@ -26,12 +26,16 @@
 			return $base_uri;
 		}
 
+		private function getRequestUri() {
+			return filter_input(INPUT_GET, '_bitphp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		}
+
 		public function __construct() {
 
 			Globals::registre([
 				  'base_path' => realpath('')
 				, 'base_uri' => $this->getBaseUri()
-				, 'request_uri' => (isset($_GET['_bitphp']) ? $_GET['_bitphp'] : '')
+				, 'request_uri' => $this->getRequestUri()
 			]);
 
 			#se define archivo de configuración

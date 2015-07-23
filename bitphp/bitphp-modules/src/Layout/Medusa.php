@@ -119,7 +119,7 @@
 				, '<!--$1-->'
 				, '<?php echo $1 ?>'
 				, '<link rel="stylesheet" href="<?php echo $_ROUTE[\'base_uri\'] ?>/public/css/$2.css">'
-				, '<script scr="<?php echo $_ROUTE[\'base_uri\'] ?>/public/js/$2.js"></script>'
+				, '<script src="<?php echo $_ROUTE[\'base_uri\'] ?>/public/js/$2.js"></script>'
 				, '<?php $1 ($3): ?>'
 				, '<?php $1; ?>'
 				, '<?php else: ?>'
