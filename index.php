@@ -1,17 +1,16 @@
 <?php
+
 	require 'bitphp/autoload.php';
 
     use \Bitphp\Base\MicroServer;
+    use \App\Models\Personas;
 
     $app = new MicroServer();
-    
-    $app->doGet('/hello/(str $name)', function($name){
-    	echo "Hola $name";
+
+    $app->set('personas', new Personas());
+
+    $app->doGet('/', function() use ($app) {
+    	print_r($app->personas->all());
     });
 
-    try
-    {
-		$app->run();    
-	} catch (Exception $e) {
-		trigger_error($e->getMessage());
-	}
+    $app->run();

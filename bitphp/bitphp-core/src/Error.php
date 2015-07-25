@@ -121,7 +121,7 @@
 					$errors = $this->errors;
 					require Globals::get('base_path') . '/olimpus/system/error_message.php';
 				} else {
-					require Globals::get('base_path') . '/olimpus/error_pages/404.php';
+					require Globals::get('base_path') . '/olimpus/static_pages/404.php';
 				}
 			}
 		}

@@ -2,6 +2,8 @@
 
 	namespace Bitphp\Modules\Http;
 
+  use \Bitphp\Core\Globals;
+
 	class Response {
 
 		protected static $statusCode;
@@ -57,7 +59,17 @@
       echo $data;
 		}
 
-    public static function error() {  }
-    public static function redir() {  }
-    public static function jsRedir() {  }
+    public static function redir( $url, $delay = 0 ) {
+
+      if(!preg_match('/^(\w+)(\:\/\/)(.*)$/', $url)) {
+        $url = Globals::get('base_uri') . $url;
+      }
+
+      if($delay > 0) {
+        require Globals::get('base_path') . '/olimpus/static_pages/redir.php';
+        return;
+      }
+
+      header("Location: $url");
+    }
 	}

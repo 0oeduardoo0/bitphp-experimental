@@ -24,8 +24,8 @@
       		}
     	}
 
-    	public static function encode( $data ) {
-    		$xml = new SimpleXMLElement("<?xml version=\"1.0\"?><root></root>");
+    	public static function encode( $name, $data ) {
+    		$xml = new SimpleXMLElement("<$name></$name>");
         	self::parse( $data, $xml );
 			return $xml->asXML();
     	}

@@ -30,6 +30,11 @@
 
 		public $blocks;
 
+		public function __construct() {
+			parent::__construct();
+			$this->mime = '.medusa.php';
+		}
+
 		private function readBlocks($source) {
 			$tokens = null;
 			preg_match_all(MT_BLOCK, $source, $tokens);
@@ -75,21 +80,6 @@
 			}
 
 			return $parent;
-		}
-
-		protected function render() {
-			parent::render();
-
-			$this->source = $this->compile($this->source);
-
-			$compress = Config::param('medusa.compress');
-			if(false !== $compress)
-				$this->source = $this->compress($this->source);
-		}
-
-		public function __construct() {
-			parent::__construct();
-			$this->mime = '.medusa.php';
 		}
 
 		public function compile($source) {
@@ -138,6 +128,16 @@
 		public function compress($data) {
 			$pattern = '#(?ix)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!/?(?:textarea|pre)\b))*+)(?:<(?>textarea|pre)\b|\z))#';
 			return preg_replace($pattern, '', $data);
+		}
+
+		protected function render() {
+			parent::render();
+
+			$this->source = $this->compile($this->source);
+
+			$compress = Config::param('medusa.compress');
+			if(false !== $compress)
+				$this->source = $this->compress($this->source);
 		}
 
 		public static function quick($name, $vars = array()) {
