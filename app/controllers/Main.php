@@ -10,7 +10,7 @@
 
       public function __index() {
          $this->medusa
-             ->load('welcome')
+             ->load('welcom')
              ->draw();
       }
    }

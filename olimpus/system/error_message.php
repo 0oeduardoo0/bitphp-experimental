@@ -39,7 +39,7 @@
                <span class="foo">#</span>
                <?php echo $error['message']  ?>.
             </h3>
-            <pre>On <?php echo $error['file'] ?> at line <?php echo $error['line'] ?><br></pre>
+            <pre>~$ php dummy error --id <?php echo $error['identifier'] ?><br></pre>
          <?php endforeach; ?>
       </div>
    </div>

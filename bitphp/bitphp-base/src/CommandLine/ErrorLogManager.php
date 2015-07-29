@@ -35,16 +35,16 @@
                $line = $error['line'];
                $url  = $error['request_uri'];
 
-               $info .= "[bold_white]   $date\n";
+               $info .= "[bold_white] ~ $date\n";
                $info .= "[bold_white]   Error [bold_blue]$id\n";
                $info .= "[bold_white]   Lanzado desde [bold_blue]$file ";
                $info .= "[bold_white]en la linea [bold_blue]$line\n";
                $info .= "[bold_white]   Url [bold_blue]$url\n\n";
-               $info .= "   [bold_red]$message...\n";
+               $info .= "[bold_red] ~ $message\n";
 
                if(!empty($error['trace'])) {
 
-                  $info .= "\n[bold_white]   ~ Stacktrace\n";
+                  $info .= "\n[bold_white] ~ Stacktrace\n";
 
                   foreach ($error['trace'] as $trace) { 
 
