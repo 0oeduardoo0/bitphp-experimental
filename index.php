@@ -1,16 +1,18 @@
 <?php
 
-	require 'bitphp/autoload.php';
+   require 'bitphp/autoload.php';
 
     use \Bitphp\Base\MicroServer;
-    use \App\Models\Personas;
+    use \Bitphp\Core\Globals;
 
     $app = new MicroServer();
 
-    $app->set('personas', new Personas());
-
     $app->doGet('/', function() use ($app) {
-    	print_r($app->personas->all());
+       var_dump(Globals::all());
     });
 
-    $app->run();
+    try {
+      $app->run();
+    } catch (Exception $e) {
+      trigger_error($e->getMessage());
+    }

@@ -1,0 +1,12 @@
+
+   ~ Bitphp ~
+
+   [bold_green]General management
+      [bold_white]php dummy version    [white]- Informacion de la version
+      [bold_white]php dummy about      [white]- Acerca de bitphp
+      [bold_white]php dummy update     [white]- Verifica actualizaciones
+
+   [bold_green]Error management
+      [bold_white]php dummy error               [white]- Lista los errores registrados
+      [bold_white]php dummy error --id, -i <id> [white]- Muestra detalles del error
+      [bold_white]php dummy error --dump, -d    [white]- Limpia el registro de errores

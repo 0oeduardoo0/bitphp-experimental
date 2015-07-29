@@ -1,51 +1,51 @@
 <?php
 
-	namespace Bitphp\Base\MicroServer;
+   namespace Bitphp\Base\MicroServer;
 
-	class Route {
+   class Route {
 
-		private static function requestMethod() {
-			$method = $_SERVER['REQUEST_METHOD'];
+      private static function requestMethod() {
+         $method = $_SERVER['REQUEST_METHOD'];
       
-      		if( !(  $method == 'GET'
-		            || $method == 'POST'
-             		|| $method == 'PUT'
-             		|| $method == 'DELETE'
-        		) )
-      		{
-          		throw new Exception("Metodo $method invalido", 1);
-      		}
+            if( !(  $method == 'GET'
+                  || $method == 'POST'
+                   || $method == 'PUT'
+                   || $method == 'DELETE'
+              ) )
+            {
+                throw new Exception("Metodo $method invalido", 1);
+            }
 
-      		return $method;
-		}
+            return $method;
+      }
 
-		private static function action( $uri ) {
-			if(empty($uri))
-				return '/';
+      private static function action( $uri ) {
+         if(empty($uri))
+            return '/';
 
-			return '/' . $uri;
-		}
+         return '/' . $uri;
+      }
 
-		private static function uriParams( $uri ) {
-			# /parametro1/parametro2/etc
-			if(!empty($uri)) {
-				return $uri;
-			}
+      private static function uriParams( $uri ) {
+         # /parametro1/parametro2/etc
+         if(!empty($uri)) {
+            return $uri;
+         }
 
-			# si no hay parametros retorna un array vacio
-			return array();
-		}
+         # si no hay parametros retorna un array vacio
+         return array();
+      }
 
-		public static function parse( $request_uri ) {
-			$array = trim($request_uri, '/');
-			$array = explode('/', $array);
+      public static function parse( $request_uri ) {
+         $array = trim($request_uri, '/');
+         $array = explode('/', $array);
 
-			$result = [
-				  'action' => self::action($request_uri)
-				, 'params' => self::uriParams($array)
-				, 'method' => self::requestMethod()
-			];
+         $result = [
+              'action' => self::action($request_uri)
+            , 'params' => self::uriParams($array)
+            , 'method' => self::requestMethod()
+         ];
 
-			return $result;
-		}
-	}
+         return $result;
+      }
+   }

@@ -1,5 +1,61 @@
 <?php
 
-	require 'bitphp/autoload.php';
-	
-	\Bitphp\Cli\Dummy::run();
+   require 'bitphp/autoload.php';
+   
+   use \Bitphp\Base\CommandLine;
+   use \Bitphp\Modules\Cli\Arguments;
+   use \Bitphp\Modules\Cli\StandardIO;
+   use \Bitphp\Base\CommandLine\ErrorLogManager as Error;
+
+   $cli = new CommandLine();
+
+   $cli->doCommand('dummy about', function() {
+      $about = file_get_contents('olimpus/system/about');
+      StandardIO::output($about);
+   });
+
+   $cli->doCommand('dummy help', function() {
+      $help = file_get_contents('olimpus/system/cli_help');
+      StandardIO::output($help);
+   });
+
+   $cli->doCommand('dummy version', function() {
+      $info = file_get_contents('olimpus/system/info');
+      StandardIO::output($info);
+   });
+
+   $cli->doCommand('dummy update', function() {
+      $advice = file_get_contents('olimpus/system/update_advice');
+      StandardIO::output($advice);
+   });
+
+   $cli->doCommand('dummy error', function() {
+      $flag = Arguments::flag('id');
+
+      if($flag !== false) {
+         $error = Arguments::get($flag);
+         $info  = Error::search($error);
+         StandardIO::output($info);
+         return;         
+      }
+
+      $flag = Arguments::flag('dump');
+
+      if($flag !== false) {
+         Error::dump();
+         StandardIO::output("   [back_green]Se limpio la vitacora de errores");
+         return;
+      }
+
+      $list = Error::generateList();
+      StandardIO::output($list);
+   });
+
+   $cli->doCommand('default', function() {
+      $command = Arguments::get(0);
+      StandardIO::output("   [back_red]Comando $command invalido");
+      StandardIO::output("   [back_white]dummy help para ver ayuda");
+   });
+
+   $command = Arguments::command();
+   $cli->run($command);

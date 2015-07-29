@@ -1,8 +1,8 @@
 {
-	"debug": true,
-	"database.pass": "holamundo",
-	"database.alias.system": "bdjudith",
-	"medusa.compress": true,
-	"cache.time": 15,
-	"cache": false
+   "debug": true,
+   "database.pass": "holamundo",
+   "database.alias.system": "bdjudith",
+   "medusa.compress": true,
+   "cache.time": 15,
+   "cache": false
 }

@@ -3,6 +3,6 @@
 if(file_exists('vendor/autoload.php')) {
     require 'vendor/autoload.php';
 } else {
-	//si no, usa su propio cargador
+   //si no, usa su propio cargador
     require 'bitphp/self_autoload.php';
 }
