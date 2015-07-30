@@ -5,6 +5,7 @@
    use \Bitphp\Base\CommandLine;
    use \Bitphp\Modules\Cli\Arguments;
    use \Bitphp\Modules\Cli\StandardIO;
+   use \Bitphp\Base\CommandLine\Trash;
    use \Bitphp\Base\CommandLine\ErrorLogManager as Error;
 
    $cli = new CommandLine();
@@ -51,11 +52,18 @@
       StandardIO::output($list);
    });
 
+   $cli->doCommand('dummy trash', function(){
+      $flag = Arguments::flag('delete-app');
+      if($flag !== false) {
+         Trash::remove();
+         return;
+      }
+   });
+
    $cli->doCommand('default', function() {
       $command = Arguments::get(0);
       StandardIO::output("   [back_red]Comando $command invalido");
       StandardIO::output("   [back_white]dummy help para ver ayuda");
    });
 
-   $command = Arguments::command();
-   $cli->run($command);
+   $cli->run();

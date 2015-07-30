@@ -4,5 +4,15 @@
    "database.alias.system": "bdjudith",
    "medusa.compress": true,
    "cache.time": 15,
-   "cache": false
+   "cache": false,
+   "trash.scan": [
+      "/var/www/html/app-test"
+   ],
+   "trash.ignore": [
+      "/var/www/html/public/(.*)",
+      "/var/www/html/app/(.*)",
+      "/var/www/html/index.php",
+      "(.*)\\.htaccess",
+      "(.*)config\\.json"
+   ]
 }

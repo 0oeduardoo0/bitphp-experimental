@@ -2,7 +2,9 @@
 
    namespace Bitphp\Base;
 
+   use \Bitphp\Core\Globals;
    use \Bitphp\Base\CommandLine\Pattern;
+   use \Bitphp\Modules\Cli\Arguments;
 
    class CommandLine {
 
@@ -32,9 +34,11 @@
          $this->$item = $value;
       }
 
-      public function run($executed) {
+      public function run() {
          if($this->runnigInWebServer())
             return false;
+
+         $executed = Arguments::command();
 
          foreach ($this->commands as $command => $callback) {
             if(@preg_match($command, $executed, $arguments)) {
@@ -63,6 +67,10 @@
       }
 
       public function __construct() {
+         Globals::registre([
+              'base_path' => realpath('')
+         ]);
+
          $this->commands = array();
       }
    }
