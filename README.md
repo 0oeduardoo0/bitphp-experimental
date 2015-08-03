@@ -1,59 +1,25 @@
-# BitPHP Devel
+# BitPHP Dev/Experimental repo
 
-Aún algunos convenios por acordar:
+# Cosas en las qué se esta trabajando o faltan por hacer
+- Comentar algunos modulos (Para la documentacion de PhpDocumentor)
+- Test unitarios de mudulos y algunos archivos del nucleo
+- Terminar con las funcionalidades qué tenia la CLI en la version anterior
+- Terminar de implementar el servicio Hmvc
+- Comenzar la imlementacion de servicio de sockets
+- Hacer qué los colores de la consola trabajen en windows (ver bitphp/bitphp-modules/src/Cli/Colors.php)
 
-- Cache habilitado por defecto.
-- Vida por defecto del cache (5 mins por ahora).
-- Nombre para el controlador principal, por ahora "Main".
-- Nombre para la acción principal del controlador, por ahora "__index()".
-- Los controladores no pertenecen a ningun espacio de nombres.
-- Los modelos de la aplicacion deben pertenecer al espacio de nombres "App\Models".
-
-
-```php
-<?php
-   
-   use \Bitphp\Modules\Layout\Medusa;
-   
-   class MyController {
-        public function __construct() {
-            $this->medusa = new Medusa();
-        }
-        public function __index() {
-            $this->medusa
-                 ->load('foo_template')
-                 ->with([
-                    'name' => 'world'
-                 ])
-                 ->draw();
-        }
-   }
-```
-
-```html
-    <html>
-        <head>
-            <title>Foo title</title>
-            :css bootstrap
-        </head>
-        <body>
-            :require another_sub_template
-            <div class="jumbotron">
-                <div class="container">
-                    <h4>Hola {{ $name }}</h4>
-                    :require another_sub_template [
-                        'and_some' => 'params'
-                    ]
-                </div>
-            </div>
-        </body>
-    </html>
-```
+# Modulos por crear:
+- Sql Query builder
+- Un ORM estaría bien xD (y si no, se puede usar uno de los muchos disponibles a través de composer)
+- Modulo para validacion de tipos de datos (si es una pass, ip, numero, etc...)
+- Modulo de conexion para Oracle, Postgres y otros manejadores
+- ... no olvides aportar tus ideas :D
 
 # New Features
 
 - **PSR-4: Autocarga de clases**
 - **Nuevo y mejorado motor de plantillas**
-- **Integracion de Composser (aún en eso xD)**
+- **Integracion de Composser**
 - **Sistema de cache**
 - **Menos configuración para poder andar (de hecho ya no depende forsozamente del archivo de configuración)**
+- **Base para la creacion de aplicaciones de linea de comandos**
