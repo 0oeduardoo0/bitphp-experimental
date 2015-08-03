@@ -35,7 +35,7 @@
                $line = $error['line'];
                $url  = $error['request_uri'];
 
-               $info .= "[bold_white] ~ $date\n";
+               $info .= "[bold_white] ~ Se produjo hace $date\n";
                $info .= "[bold_white]   Error [bold_blue]$id\n";
                $info .= "[bold_white]   Lanzado desde [bold_blue]$file ";
                $info .= "[bold_white]en la linea [bold_blue]$line\n";
@@ -82,7 +82,7 @@
             $date = TimeDiff::getTimeAgo($error['date']);
             $message = substr($error['message'], 0, 60);
 
-            $list .= "[bold_white]   ($id) - $date\n   [bold_red]$message...\n";
+            $list .= "[bold_white]   ($id) - Hace $date\n   [bold_red]$message...\n";
             $counter++;
          }
 

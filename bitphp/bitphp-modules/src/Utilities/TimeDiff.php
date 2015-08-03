@@ -22,13 +22,13 @@
             $time_ago = date('j F, Y',strtotime($string_date));
 
         } else if((int)$hours_ago > 1) {
-            $time_ago = 'Hace '.$hours_ago.' horas';
+            $time_ago = $hours_ago . ' horas';
         } else if((int)$mins_ago > 1 && (int)$mins_ago < 59) {
-            $time_ago = 'Hace '.$mins_ago.' minutos';
+            $time_ago = $mins_ago . ' minutos';
         } else if((int)$seconds_ago > 5 && (int)$seconds_ago < 59) {
-            $time_ago = 'Hace ' . $seconds_ago.' segundos';
+            $time_ago = $seconds_ago . ' segundos';
         } else {
-            $time_ago = 'Hace unos segundos';
+            $time_ago = 'unos segundos';
         }
 
         return $time_ago;

@@ -1,5 +1,7 @@
 <?php
 
+   namespace App\Controllers;
+
    use \Bitphp\Modules\Layout\Medusa;
 
    class Main {

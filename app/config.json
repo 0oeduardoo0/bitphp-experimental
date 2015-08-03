@@ -1,18 +1,16 @@
 {
    "debug": true,
    "database.pass": "holamundo",
-   "database.alias.system": "bdjudith",
+   "database.alias.system": "dbexample",
    "medusa.compress": true,
    "cache.time": 15,
    "cache": false,
    "trash.scan": [
-      "/var/www/html/app-test"
+      "/var/www/html/app (copia)"
    ],
    "trash.ignore": [
       "/var/www/html/public/(.*)",
       "/var/www/html/app/(.*)",
-      "/var/www/html/index.php",
-      "(.*)\\.htaccess",
-      "(.*)config\\.json"
+      "/var/www/html/index.php"
    ]
 }

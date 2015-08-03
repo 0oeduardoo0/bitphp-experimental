@@ -6,29 +6,10 @@
    use \Bitphp\Modules\Cli\Arguments;
    use \Bitphp\Modules\Cli\StandardIO;
    use \Bitphp\Base\CommandLine\Trash;
+   use \Bitphp\Modules\Utilities\TimeDiff;
    use \Bitphp\Base\CommandLine\ErrorLogManager as Error;
 
    $cli = new CommandLine();
-
-   $cli->doCommand('dummy about', function() {
-      $about = file_get_contents('olimpus/system/about');
-      StandardIO::output($about);
-   });
-
-   $cli->doCommand('dummy help', function() {
-      $help = file_get_contents('olimpus/system/cli_help');
-      StandardIO::output($help);
-   });
-
-   $cli->doCommand('dummy version', function() {
-      $info = file_get_contents('olimpus/system/info');
-      StandardIO::output($info);
-   });
-
-   $cli->doCommand('dummy update', function() {
-      $advice = file_get_contents('olimpus/system/update_advice');
-      StandardIO::output($advice);
-   });
 
    $cli->doCommand('dummy error', function() {
       $flag = Arguments::flag('id');
@@ -44,7 +25,7 @@
 
       if($flag !== false) {
          Error::dump();
-         StandardIO::output("   [back_green]Se limpio la vitacora de errores");
+         StandardIO::output("   [back_green]Se limpio el registro de errores");
          return;
       }
 
@@ -53,17 +34,69 @@
    });
 
    $cli->doCommand('dummy trash', function(){
-      $flag = Arguments::flag('delete-app');
+      $flag = Arguments::flag('remove-app');
       if($flag !== false) {
          Trash::remove();
          return;
       }
+
+      $flag = Arguments::flag('backup');
+      if($flag !== false) {
+         $name = Arguments::get($flag);
+         if($name === null){
+            StandardIO::output(' [back_red]~ Indica un nombre');
+            return;
+         }
+
+         StandardIO::output(" ~ Restaurando el backup [bold_blue]$name");
+
+         $force_restore = Arguments::flag('force-restore');
+         Trash::restore($name, $force_restore);
+         return;
+      }
+
+      #sin ninguna bandera solo lista los backups
+      StandardIO::output(" ~ Lista de respaldos en la papelera");
+      $backups = Trash::getBackupsList();
+      foreach ($backups as $backup => $data) {
+         $files = $data['meta']['count'];
+         $date  = TimeDiff::getTimeAgo($data['meta']['date']);
+         StandardIO::output("   Backup [bold_blue]$backup [bold_white]$files archivos hace $date");
+      }
    });
 
    $cli->doCommand('default', function() {
+      $flag = Arguments::flag('help');
+      if($flag !== false) {
+         $help = file_get_contents('olimpus/system/cli_help');
+         StandardIO::output($help);
+         return;
+      }
+
+      $flag = Arguments::flag('version');
+      if($flag !== false) {
+         $info = file_get_contents('olimpus/system/info');
+         StandardIO::output($info);
+         return;
+      }
+
+      $flag = Arguments::flag('about');
+      if($flag !== false) {
+         $about = file_get_contents('olimpus/system/about');
+         StandardIO::output($about);
+         return;
+      }
+
+      $flag = Arguments::flag('update');
+      if($flag !== false) {
+         $advice = file_get_contents('olimpus/system/update_advice');
+         StandardIO::output($advice);
+         return;
+      }
+
       $command = Arguments::get(0);
       StandardIO::output("   [back_red]Comando $command invalido");
-      StandardIO::output("   [back_white]dummy help para ver ayuda");
+      StandardIO::output("   [back_white]dummy --help para ver ayuda");
    });
 
    $cli->run();

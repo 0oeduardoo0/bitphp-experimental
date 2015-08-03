@@ -13,7 +13,8 @@
             return [];
          }
 
-         $list = array();
+         $dir = realpath($dir);
+         $list = array($dir);
          $dir_obj = dir($dir);
          while (false !== ($item = $dir_obj->read())) {
             if($item == '.' || $item == '..')
