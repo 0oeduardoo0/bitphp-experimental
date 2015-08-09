@@ -1,6 +1,6 @@
    <title>Oops!</title>
    <meta charset="utf8">
-   <link rel="stylesheet" type="text/css" href="<?php echo \Bitphp\Core\Globals::get('base_uri') ?>/public/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="<?php echo \Bitphp\Core\Globals::get('base_url') ?>/public/css/bootstrap.css">
    <style type="text/css">
       .jumbotron {
          color: #fff;

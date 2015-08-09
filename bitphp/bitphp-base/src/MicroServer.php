@@ -41,8 +41,15 @@
 
          Globals::registre('uri_params', $route['params']);
          $this->action = $route['action'];
-         $this->method = $route['method'];
-         $this->routes = array();
+         $this->method = $route['method'];            
+         
+         $this->routes = array(
+              'GET' => array()
+            , 'POST' => array()
+            , 'DELETE' => array()
+            , 'PUT' => array()
+         );
+
          $this->binded = array();
       }
 
@@ -113,7 +120,7 @@
        *   @param Clousure $callback funcion anonima a ejecutar para la ruta
        *   @return void
        */
-      public function doDelete( $route, $callback ) {
+      public function doDelete($route, $callback) {
          $pattern = Pattern::create($route);
          $this->routes['DELETE'][$pattern] = $callback;
       }
@@ -126,7 +133,7 @@
        *   @param mixed $value valor, ya sea como el de una variable o un metodo
        *   @return void
        */
-      public function set( $item, $value ) {
+      public function set($item, $value) {
          if(is_callable($value)) {
             $this->binded[$item] = Closure::bind($value, $this, get_class());
             return;
@@ -144,6 +151,9 @@
        *   @return void
        */
       public function run() {
+         if($this->method == 'invalid')
+            throw new Exception('Invalid request method');
+
          $routes = $this->routes[$this->method];
 
          foreach ($routes as $route => $callback) {
@@ -154,7 +164,6 @@
             }
          }
 
-         throw new Exception("Accion no definida para la ruta $this->action", 1);
-         
+         throw new Exception('Invalid request route');         
       }
    }

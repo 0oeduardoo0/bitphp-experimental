@@ -28,7 +28,7 @@
 
          Globals::registre([
               'base_path' => realpath('')
-            , 'base_uri' => $this->getBaseUri()
+            , 'base_url' => $this->getBaseUrl()
             , 'request_uri' => $this->getRequestUri()
          ]);
 
@@ -45,19 +45,19 @@
        *
        *   @return string Url base, completa, del servidor
        */
-      private function getBaseUri() {
-         $base_uri  = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
-         $base_uri .= $_SERVER['SERVER_NAME'];
+      private function getBaseUrl() {
+         $base_url  = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
+         $base_url .= $_SERVER['SERVER_NAME'];
          $dirname = dirname($_SERVER['PHP_SELF']);
-         $base_uri .= $dirname == '/' ? '' : $dirname;
-         return $base_uri;
+         $base_url .= $dirname == '/' ? '' : $dirname;
+         return $base_url;
       }
 
       /**
        *  Devuelve la url solicitada que se genera en
        *  $_GET['_bitphp'] a traves del htaccess
        *
-       *  @return string Url solicitada
+       *  @return string Uri solicitada
        */
       private function getRequestUri() {
          return filter_input(INPUT_GET, '_bitphp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

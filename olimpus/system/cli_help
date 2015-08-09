@@ -2,7 +2,7 @@
  ~ Bitphp ~
 
  [bold_green]General management
-   [bold_white]php dummy --help, -h     [white]- Musetra este mensage
+   [bold_white]php dummy --help, -h     [white]- Muestra este mensage
    [bold_white]php dummy --version, -v  [white]- Informacion de la version
    [bold_white]php dummy --about, -a    [white]- Acerca de bitphp
    [bold_white]php dummy --update, -u   [white]- Verifica actualizaciones

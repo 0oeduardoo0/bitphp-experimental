@@ -56,7 +56,7 @@
          # id es un hash md5 formado por la fecha y un numero aleatorio
          $date = date(DATE_ISO8601);
          $identifier  = md5($date . rand(0, 9999));
-         $request_uri = Globals::get('base_uri') . '/' . Globals::get('request_uri');
+         $request_uri = Globals::get('base_url') . '/' . Globals::get('request_uri');
 
          $log = [
               'date' => $date

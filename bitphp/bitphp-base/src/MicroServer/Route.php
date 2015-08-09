@@ -7,13 +7,13 @@
       private static function requestMethod() {
          $method = $_SERVER['REQUEST_METHOD'];
       
-            if( !(  $method == 'GET'
+            if( !(   $method == 'GET'
                   || $method == 'POST'
-                   || $method == 'PUT'
-                   || $method == 'DELETE'
+                  || $method == 'PUT'
+                  || $method == 'DELETE'
               ) )
             {
-                throw new Exception("Metodo $method invalido", 1);
+                $method = 'invalid';
             }
 
             return $method;
@@ -23,7 +23,7 @@
          if(empty($uri))
             return '/';
 
-         return '/' . $uri;
+         return '/' . rtrim($uri, '/');
       }
 
       private static function uriParams( $uri ) {

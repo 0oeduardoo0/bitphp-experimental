@@ -26,7 +26,9 @@
             <div class="col-sm-2" align="center">
                <img src="{{ :base }}/public/img/unicorn.png" class="sticker">
             </div>
-            <h1>Fuck Yeah!</h1>
+            <div class="col-sm-10" align="left">
+               <h1>Fuck Yeah!</h1>
+            </div>
          </div>
       </div>
    </div>
@@ -40,11 +42,6 @@
             <span class="foo">#</span> &nbsp;
             Danger! This version is experimental, somethings can to exploit D:
          </h3>
-         <h3>
-            <span class="foo">#</span> &nbsp;
-            Bitphp loaded config:
-         </h3>
-         <pre>{{ json_encode(\Bitphp\Core\Config::all(), JSON_PRETTY_PRINT) }}</pre>
       </div>
    </div>
 </body>
