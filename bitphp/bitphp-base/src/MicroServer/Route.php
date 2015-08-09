@@ -5,18 +5,7 @@
    class Route {
 
       private static function requestMethod() {
-         $method = $_SERVER['REQUEST_METHOD'];
-      
-            if( !(   $method == 'GET'
-                  || $method == 'POST'
-                  || $method == 'PUT'
-                  || $method == 'DELETE'
-              ) )
-            {
-                $method = 'invalid';
-            }
-
-            return $method;
+         return $_SERVER['REQUEST_METHOD'];
       }
 
       private static function action( $uri ) {

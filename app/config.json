@@ -12,5 +12,7 @@
       "/var/www/html/public/(.*)",
       "/var/www/html/app/(.*)",
       "/var/www/html/index.php"
-   ]
+   ],
+   "token.signature": "Holamundo123_",
+   "token.life": 300
 }

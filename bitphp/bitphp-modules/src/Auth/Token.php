@@ -31,7 +31,7 @@
          return $jwt;
       }
 
-      public function check($token) {
+      public function decode($token) {
          try {
             $payload = JWT::decode($token, $this->signature_key);
          } catch (Exception $e) {

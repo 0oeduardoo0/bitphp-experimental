@@ -20,14 +20,14 @@
     */
    class MicroServer extends Server {
 
-      /** Ruta solicitada */
-      protected $action;
-      /** Metodo http de la solicitud */
-      protected $method;
       /** Rutas registradas */
       protected $routes;
       /** Metodos agregados dinamicamente a la clase */
       protected $binded;
+      /** Ruta solicitada */
+      public $action;
+      /** Metodo http de la solicitud */
+      public $method;
 
       /**
        *   Durante el contructor se obtiene informacion
@@ -65,64 +65,27 @@
             return call_user_func_array($this->binded[$method], $args);
          }
 
+         if(preg_match('/^do(\w+)$/', $method, $matches)) {
+            $http_method = strtoupper($matches[1]);
+            $route = $args[0];
+            $callback = $args[1];
+            return $this->registreRoute($http_method, $route, $callback);
+         }
+
          throw new Exception('La clase ' . __CLASS__ . " no contiene el metodo $method", 1);
       }
 
       /**
-       *   Se usa para definir la clausula (funcion)
-       *   que responda a la ruta indicada, si esta
-       *   es solicitada a traves del metodo GET
+       *  Registra una funcion para su respectiva ruta para el
+       *  metodo http indicado
        *
-       *   $app->doGet('/say/hello', function() {
-       *      echo "Hello world!";
-       *   });
-       *
-       *   @param string $route ruta a la que respondera la funcion
-       *   @param Clousure $callback funcion anonima a ejecutar para la ruta
-       *   @return void
+       *  @param string $http_method Metodo http en formato UPERCASE
+       *  @param string $route uri o ruta para la funcion
+       *  @param Clousure $callback funcion que responde a la ruta indicada
+       *  @return void
        */
-      public function doGet($route, $callback) {
-         $pattern = Pattern::create($route);
-         $this->routes['GET'][$pattern] = $callback;
-      }
-
-      /**
-       *   Se usa para definir rutas que responden
-       *   al metodo PUT
-       *
-       *   @param string $route ruta a la que respondera la funcion
-       *   @param Clousure $callback funcion anonima a ejecutar para la ruta
-       *   @return void
-       */
-      public function doPut($route, $callback) {
-         $pattern = Pattern::create($route);
-         $this->routes['PUT'][$pattern] = $callback;
-      }
-
-      /**
-       *   Se usa para definir rutas que responden
-       *   al metodo POST
-       *
-       *   @param string $route ruta a la que respondera la funcion
-       *   @param Clousure $callback funcion anonima a ejecutar para la ruta
-       *   @return void
-       */
-      public function doPost($route, $callback) {
-         $pattern = Pattern::create($route);
-         $this->routes['POST'][$pattern] = $callback;
-      }
-
-      /**
-       *   Se usa para definir rutas que responden
-       *   al metodo DELETE
-       *
-       *   @param string $route ruta a la que respondera la funcion
-       *   @param Clousure $callback funcion anonima a ejecutar para la ruta
-       *   @return void
-       */
-      public function doDelete($route, $callback) {
-         $pattern = Pattern::create($route);
-         $this->routes['DELETE'][$pattern] = $callback;
+      protected function registreRoute($http_method, $route, $callback) {
+         $this->routes[$http_method][$route] = $callback;
       }
 
       /**
@@ -151,19 +114,18 @@
        *   @return void
        */
       public function run() {
-         if($this->method == 'invalid')
-            throw new Exception('Invalid request method');
+         if(!isset($this->routes[$this->method]))
+            throw new Exception('Unused request method');
 
-         $routes = $this->routes[$this->method];
-
-         foreach ($routes as $route => $callback) {
-            if(preg_match($route, $this->action, $args)) {
-               array_shift($args);
-               call_user_func_array($callback, $args);
-               return;
+         foreach ($this->routes[$this->method] as $route => $callback) {
+            $pattern = Pattern::create($route);
+            if(preg_match($pattern, $this->action, $args)) {
+              array_shift($args);
+              call_user_func_array($callback, $args);
+              return;
             }
          }
 
-         throw new Exception('Invalid request route');         
+         throw new Exception('Unused request uri');
       }
    }

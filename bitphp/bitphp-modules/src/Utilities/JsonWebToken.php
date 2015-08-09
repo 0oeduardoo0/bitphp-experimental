@@ -30,7 +30,7 @@
          ];
 
          if(!isset($algorithms[$alg]))
-            throw new Exception("Wrong algorithm '$alg'");
+            throw new Exception("Wrong token algorithm '$alg'");
 
          return hash_hmac($algorithms[$alg], $data, $key, true);
       }
@@ -55,15 +55,15 @@
       public static function decode($token, $key, $verify = true) {
          $token = explode('.', $token);
          if(3 !== count($token))
-            throw new Exception("Invalid number of segments");
+            throw new Exception("Invalid token number of segments");
          
          $header = self::b64UrlDecode($token[0]);
          if(null === ($header = json_decode($header, true)))
-            throw new Exception("Invalid header encoding");
+            throw new Exception("Invalid token header encoding");
 
          $payload = self::b64UrlDecode($token[1]);
          if(null === ($payload = json_decode($payload, true)))
-            throw new Exception("Invalid payload encoding");
+            throw new Exception("Invalid token payload encoding");
 
          if($verify) {
             if(empty($header['alg']))
