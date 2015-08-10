@@ -40,7 +40,7 @@
          </h3>
          <h3>
             <span class="foo">#</span> &nbsp;
-            Danger! This version is experimental, somethings can to exploit D:
+            Caution! This version is <b>beta</b> D:
          </h3>
       </div>
    </div>
