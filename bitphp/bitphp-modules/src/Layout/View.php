@@ -34,6 +34,9 @@
       public function __construct() {
          $this->clean();
          $this->mime = '.php';
+
+         //set cache angent
+         Cache::$agent = 'views';
       }
 
       /**
@@ -73,7 +76,7 @@
             return;
          }
 
-         $data = Cache::isCached([$this->loaded, $this->variables]);
+         $data = Cache::read([$this->loaded, $this->variables]);
 
          if( false !== $data ) {
             $this->source = $data;

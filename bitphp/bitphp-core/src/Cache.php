@@ -16,6 +16,45 @@
     */
    class Cache {
 
+      /** 
+       *  Entidad qué solicita el cache, para que dentro
+       *  de la configuracion busque parametros de cache
+       *  relacionados con esa entidad:
+       *
+       *  Eg. medusa.cache.time ó db.cache.time
+       */
+      public static $agent;
+
+      /**
+       *  Lee el archivo de configuracion de la aplicacion
+       *  y solo si el cache para el agente esta en verdadero
+       *  retorna verdadero, si este no es indicado retorna falso
+       *
+       *  @return bool
+       */
+      protected static function cacheEnabled() {
+        if(true === Config::param(self::$agent . '.cache'))
+          return true;
+
+        return false;
+      }
+
+      /**
+       *  Retorna el tiempo de cache en segundos
+       *  ya sea de la configuracion o el valor
+       *  por defecto
+       *
+       *  @return integer
+       */
+      protected static function cacheTime() {
+        $cachetime = Config::param(self::$agent . '.cache.time');
+
+        if( null === $cachetime || !is_integer($cachetime) )
+          $cachetime = 300; //senconds
+
+        return $cachetime;
+      }
+
       /**
        *   Crea el nombre de un archivo de cache en base a un arreglo.
        *
@@ -31,39 +70,22 @@
       }
 
       /**
-       *   Verifica si los datos pasados estan en el cache, si estos sobrepasan el tiempo
-       *   de vida del cache se eliminan y retorna false
-       *
-       *   @param array $dad Parametros que se usan para verificar si estan en el cache
-       *   @return mixed false si no esta en cache, o este esta desabilitado, retorna su contenido
-       *                   si este existe
-       */
-      public static function isCached($data) {
-         if(false === Config::param('cache'))
-            return false;
-
-         $file = self::generateName($data);
-         $cachetime = Config::param('cache.time');
-
-         if( null === $cachetime || !is_numeric($cachetime) )
-            $cachetime = 300; //senconds
-
-         return self::read($file);
-      }
-
-      /**
        *   Lee el contenido de un archivo en cache, si este existe
        *   y no ha sobrepasado el tiempo de vida
        *
-       *   @param string $file Ruta del archivo a leer
+       *   @param array $data Parametros a tomer en cuanta para cachear
        *   @return mixed contenido del archivo si extiste y no a expirado
        *              false de lo contrario
        */
-      public static function read($file) {
+      public static function read($data) {
+         if(!self::cacheEnabled())
+            return false;
+
+         $file = self::generateName($data);
+
          if(file_exists($file)) {
-            if((fileatime($file) + $cachetime) >= time()) {
+            if((fileatime($file) + self::cacheTime()) >= time())
                return file_get_contents($file);
-            }
 
             unlink($file);
          }
@@ -80,7 +102,7 @@
        *   @return void
        */
       public static function save($data, $content) {
-         if(false === Config::param('cache'))
+         if(!self::cacheEnabled())
             return false;
          
          $file = self::generateName($data);

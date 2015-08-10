@@ -8,7 +8,7 @@
          return implode(' ', $_SERVER['argv']);
       }
 
-      public function get($index) {
+      public static function get($index) {
          $arguments = $_SERVER['argv'];
          array_shift($arguments);
 
@@ -24,7 +24,7 @@
          return null;
       }
 
-      public function flag($flag) {
+      public static function flag($flag) {
          $arguments = $_SERVER['argv'];
          array_shift($arguments);
 

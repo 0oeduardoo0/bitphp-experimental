@@ -3,8 +3,8 @@
    "database.pass": "holamundo",
    "database.alias.system": "dbexample",
    "medusa.compress": true,
-   "cache.time": 15,
-   "cache": false,
+   "views.cache.time": 15,
+   "views.cache": false,
    "trash.scan": [
       "/var/www/html/app (copia)"
    ],

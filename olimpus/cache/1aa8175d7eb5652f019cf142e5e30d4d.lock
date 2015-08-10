@@ -1,16 +1,1 @@
- <!DOCTYPE html><html><head><title>Yeah!</title><meta charset="utf8"><link rel="stylesheet" href="http://localhost/public/css/bootstrap.css"><style type="text/css">.jumbotron {color: #fff;background-color: #9AA3FF;}.foo {color: #9AA3FF;}.sticker {max-width: 150px;}</style></head><body><div class="jumbotron"><div class="container"><div class="row"><div class="col-sm-2" align="center"><img src="http://localhost/public/img/unicorn.png" class="sticker"></div><h1>Fuck Yeah!</h1></div></div></div><div class="container"><div class="row"><h3><span class="foo">#</span> &nbsp;Bitphp is running in this magical land, with unicorns and rainbows!</h3><h3><span class="foo">#</span> &nbsp;Danger! This version is experimental, somethings can to exploit D:</h3><h3><span class="foo">#</span> &nbsp;Bitphp loaded config:</h3><pre>{
-    "debug": true,
-    "database.pass": "holamundo",
-    "database.alias.system": "dbexample",
-    "medusa.compress": true,
-    "cache.time": 15,
-    "cache": true,
-    "trash.scan": [
-        "\/var\/www\/html\/app (copia)"
-    ],
-    "trash.ignore": [
-        "\/var\/www\/html\/public\/(.*)",
-        "\/var\/www\/html\/app\/(.*)",
-        "\/var\/www\/html\/index.php"
-    ]
-}</pre></div></div></body></html> 
+ <!DOCTYPE html><html><head><title>Yeah!</title><meta charset="utf8"><link rel="stylesheet" href="http://localhost/public/css/bootstrap.css"><style type="text/css">.jumbotron {color: #fff;background-color: #9AA3FF;}.foo {color: #9AA3FF;}.sticker {max-width: 150px;}</style></head><body><div class="jumbotron"><div class="container"><div class="row"><div class="col-sm-2" align="center"><img src="http://localhost/public/img/unicorn.png" class="sticker"></div><div class="col-sm-10" align="left"><h1>Fuck Yeah!</h1></div></div></div></div><div class="container"><div class="row"><h3><span class="foo">#</span> &nbsp;Bitphp is running in this magical land, with unicorns and rainbows!</h3><h3><span class="foo">#</span> &nbsp;Caution! This version is <b>beta</b> D:</h3></div></div></body></html> 

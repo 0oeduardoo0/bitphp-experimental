@@ -4,7 +4,6 @@
 
    use \Bitphp\Core\Globals;
    use \Bitphp\Core\Config;
-   use \Bitphp\Core\Cache;
 
    define('MT_MEDUSA_COMMENT', '/\/\*(.*)?\*/Usx');
    define('MT_HTML_COMMENT', '/\/\-(.*)?\-\//Usx');
@@ -142,9 +141,7 @@
 
       public static function quick($name, $vars = array()) {
          $loader = new Medusa();
-         $loader->load($name)
-               ->with($vars)
-               ->draw();
+         $loader->load($name)->with($vars)->draw();
          $loader = null;
       }
    }
