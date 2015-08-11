@@ -130,9 +130,12 @@
       }
 
       protected function render() {
-         parent::render();
+         #parent::render();
 
-         $this->source = $this->compile($this->source);
+         foreach ($this->loaded as $file) {
+            $source = file_get_contents($file);
+            $this->source .= $this->compile($source);
+         }
 
          $compress = Config::param('medusa.compress');
          if(false !== $compress)
@@ -141,7 +144,7 @@
 
       public static function quick($name, $vars = array()) {
          $loader = new Medusa();
-         $loader->load($name)->with($vars)->draw();
+         $loader->load($name)->with($vars)->make()->draw();
          $loader = null;
       }
    }

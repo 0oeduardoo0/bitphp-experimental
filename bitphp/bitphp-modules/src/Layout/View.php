@@ -8,12 +8,15 @@
 
    /**
     *   Modulo para el manejo de vistas
+    *
+    *   @author Eduardo B Romero
     */
    class View {
 
       protected $loaded;
       protected $variables;
       protected $mime;
+      protected $output_buffer;
       public $source;
 
       /**
@@ -33,6 +36,7 @@
 
       public function __construct() {
          $this->clean();
+         $this->output_buffer = 'empty';
          $this->mime = '.php';
 
          //set cache angent
@@ -47,7 +51,7 @@
 
          $file = Globals::get('base_path') . "/app/views/$name" . $this->mime;
          if(false === file_exists($file)) {
-            $message  = "No se pudo cargar las vista '$name.' ";
+            $message  = "No se pudo cargar la vista '$name.' ";
             $message .= "El fichero '$file' no existe";
             trigger_error($message);
             return false;
@@ -68,7 +72,7 @@
       /**
        * Imprime la vista
        */
-      public function draw() {
+      public function make() {
          if(empty($this->loaded)) {
             $message  = 'No se pudo mostrar la(s) vista(s) ';
             $message .= 'ya que no se han cargado ninguna';
@@ -76,13 +80,10 @@
             return;
          }
 
-         $data = Cache::read([$this->loaded, $this->variables]);
+         $this->output_buffer = Cache::read([$this->loaded, $this->variables]);
 
-         if( false !== $data ) {
-            $this->source = $data;
-            echo $data;
+         if(false !== $this->output_buffer)
             return;
-         }
 
          $this->render();
          $_ROUTE = Globals::all();
@@ -90,11 +91,19 @@
          ob_start();
          extract($this->variables);
          eval("?> $this->source <?php ");
-         $data = ob_get_clean();
+         $this->output_buffer = ob_get_clean();
 
-         Cache::save([$this->loaded, $this->variables], $data);
+         Cache::save([$this->loaded, $this->variables], $this->output_buffer);
          $this->clean();
-         echo $data;
+         return $this;
+      }
+
+      public function draw() {
+        echo $this->output_buffer;
+      }
+
+      public function read() {
+        return $this->output_buffer;
       }
 
       /**
@@ -103,7 +112,7 @@
        */
       public static function quick($name, $vars = array()) {
          $loader = new View();
-         $loader->load($name)->with($vars)->draw();
+         $loader->load($name)->with($vars)->make()->draw();
          $loader = null;
       }
    }

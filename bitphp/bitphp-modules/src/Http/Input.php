@@ -30,7 +30,7 @@
         $result = $parms[$index];
       } else {
         $index = array_search($index, $parms);
-        $result = self::url($index + 1, $filter);
+        $result = self::url($index + 1);
       }
 
       return $result;

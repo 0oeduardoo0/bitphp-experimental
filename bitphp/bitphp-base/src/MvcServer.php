@@ -41,9 +41,7 @@
        *   @return Object instancia del controlador cargado
        */
       public function getController() {
-         # El formato del nombre del archivo debe de ser
-         # example.com/controlador -> app/controllers/Controlador.php
-         $file_name = ucfirst($this->controller);
+         $file_name = ucwords($this->controller, '_');
          $file = Globals::get('base_path') . '/app/controllers/' . $file_name . '.php';
          if(false === file_exists($file)){
             $message  = "Error al cargar el controlador '$this->controller.' ";
@@ -52,10 +50,10 @@
             return false;
          }
          
-         require $file;
-
-         $fullClassName = '\App\Controllers\\' . $this->controller;
-         return  new $fullClassName;
+         # en su lugar se deja al autocargador hacer su trabajo
+         # require $file;
+         $fullClassName = '\App\Controllers\\' . $file_name;
+         return new $fullClassName;
       }
 
       /**

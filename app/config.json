@@ -6,14 +6,6 @@
    "medusa.compress": true,
    "views.cache.time": 15,
    "views.cache": false,
-   "trash.scan": [
-      "/var/www/html/app (copia)"
-   ],
-   "trash.ignore": [
-      "/var/www/html/public/(.*)",
-      "/var/www/html/app/(.*)",
-      "/var/www/html/index.php"
-   ],
    "token.signature": "Holamundo123_",
    "token.life": 30
 }
