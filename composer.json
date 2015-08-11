@@ -33,7 +33,8 @@
             "Bitphp\\Base\\": "bitphp/bitphp-base/src",
             "Bitphp\\Modules\\": "bitphp/bitphp-modules/src",
             "Bitphp\\Cli\\": "bitphp/bitphp-cli/src",
-            "App\\Models\\": "app/models"
+            "App\\Models\\": "app/models",
+            "App\\Controllers\\": "app/controllers"
         }
     }
 }
