@@ -1,8 +1,21 @@
+
 <?php
 
-   require 'bitphp/autoload.php';
+  /**
+   *  Bitphp Framework
+   */
 
-   use \Bitphp\Base\MvcServer;
+  require 'bitphp/autoload.php';
 
-   $server = new MvcServer();
-   $server->run();
+  use \Bitphp\Base\MicroServer;
+  use \Bitphp\Modules\Layout\Medusa;
+
+  $server   = new MicroServer();
+  $template = new Medusa();
+
+  $server->doGet('/', function() use ($template) {
+    $template->load('welcome')
+             ->draw();
+  });
+
+  $server->run();
