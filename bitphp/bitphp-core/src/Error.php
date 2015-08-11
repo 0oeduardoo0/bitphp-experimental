@@ -4,6 +4,7 @@
    
    use \Exception;
    use \Bitphp\Core\Globals;
+   use \Bitphp\Core\Config;
 
    /**
     *   Clase para registrar los error_handlers de bitphp
@@ -17,25 +18,16 @@
     *   @author Eduardo B <eduardo@root404.com>
     */
    class Error {
-
-      private $log_file;
+      
       private $errors;
-      public $debug;
 
       public function registre() {
-
           ini_set('display_errors', 0);
           error_reporting(E_ALL);
           # se definen las funciones para el manejo de errores
           set_error_handler(array($this, 'globalErrorHandler'));
           register_shutdown_function(array($this, 'fatalErrorHandler'));
 
-          #debug de errores
-         $debug = Config::param('debug');
-         $this->debug = ( null === $debug ) ? true : $debug;
-
-         #archivo para el loggeo de errores
-          $this->log_file = Globals::get('base_path') . '/olimpus/log/errors.log';
           $this->errors = array();
       }
       
@@ -71,7 +63,14 @@
 
          $log = json_encode($log) . PHP_EOL;
 
-         $done = @error_log($log, 3, $this->log_file);
+         $save_log = Config::param('errors.log');
+         if(false !== $save_log)
+          $save_log = true;
+
+         if(!$save_log)
+          return false;
+
+         $done = @error_log($log, 3, Globals::get('base_path') . '/olimpus/log/errors.log');
          return $done ? $identifier : false;
       }
 
@@ -118,8 +117,11 @@
          }
 
          if (!empty($this->errors)) {
-            #Si esta habilitado el debug lo muestra y si no manda 404
-            if($this->debug) {
+            $display = Config::param('errors.display');
+            if(false !== $display)
+              $display = true;
+
+            if($display) {
                $errors = $this->errors;
                require Globals::get('base_path') . '/olimpus/system/error_message.php';
             } else {
