@@ -14,7 +14,6 @@
 
   $server->doGet('/', function() use ($template) {
     $template->load('welcome')
-             ->make()
              ->draw();
   });
 
