@@ -126,7 +126,7 @@
             return $this;
           }
 
-         $file = Globals::get('base_path') . "/app/views/$name" . $this->mime;
+         $file = Globals::get('app_path') . "/views/$name" . $this->mime;
          if(false === file_exists($file)) {
             $message  = "No se pudo cargar la vista '$name.' ";
             $message .= "El fichero '$file' no existe";

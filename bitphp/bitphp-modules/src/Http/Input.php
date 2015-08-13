@@ -5,12 +5,19 @@
   use \Bitphp\Core\Globals;
 
   /**
-   *   Obtiene una entrada limpia de los metodos de entrada
+   *  Obtiene una entrada limpia de los metodos de entrada
+   *
+   *  @author Eduardo B Romero
    */
   class Input {
 
     /**
-     *   Para ahorrar codigo tio
+     *   Filtra el indice del metodo HTTP indicado
+     *
+     *   @param string $index Indice del metodo
+     *   @param int $method Metodo HTTP se pueden usar las consatantes INPUT_POST, etc.
+     *   @param bool $filter Activa/Desactiva el filtro completo
+     *   @return string valor leido o null si no existe
      */
     private static function filter($index, $method, $filter) {
       $filter = $filter ? FILTER_SANITIZE_FULL_SPECIAL_CHARS : FILTER_DEFAULT;
@@ -18,7 +25,10 @@
     }
 
     /**
-     *   Obtiene la entrada limpia de los parametros de la url
+     *   Obtiene la entrada (estrictamente limpia) de los parametros de la url
+     *
+     *   @param mixed $index NOmbre o posicion de la variable a leer
+     *   @return string Valor leido o null si no existe
      */
     public static function url($index) {
       $parms = Globals::get('uri_params');
@@ -39,13 +49,21 @@
     /**
      *   Obtiene una entrada limpia de $_POST[$index]
      *   el segundo parametro en false desactiva el filtro
+     *
+     *   @param string $index Indice a leer ($_POST['indice'])
+     *   @param bool $filter Activa/desactiva el filtro, true por defecto
+     *   @return string Valor leido o null si no existe
      */
     public static function post($index, $filter = true) {
       return self::filter($index, INPUT_POST, $filter);
     }
 
     /**
-     *   Obtiene una entrada limpia de $_GET[$index]
+     *  Obtiene una entrada limpia de $_GET[$index]
+     *
+     *  @param string $index Indice a leer ($_GET['index>'])
+     *  @param bool $filter Indica si se debe aplicar o no un filtro, por defecto en true
+     *  @return string Valor leido o null si el indice no existe
      */
     public static function get($index, $filter = true) {
       return self::filter($index, INPUT_GET, $filter);
@@ -53,6 +71,10 @@
 
     /**
      *   Obtiene una entrada limpia de $_COOKIE[$index]
+     *
+     *  @param string $index Indice a leer ($_COOKIE['index>'])
+     *  @param bool $filter Indica si se debe aplicar o no un filtro, por defecto en true
+     *  @return string Valor leido o null si el indice no existe
      */
     public static function cookie($index, $filter = true) {
       return self::filter($index, INPUT_COOKIE, $filter);

@@ -16,6 +16,10 @@
 
       /** Controlador solicitado */
       protected $controller;
+      /** Fichero del controlador solicitado */
+      protected $controller_file;
+      /** Espacio de nombre del controlador */
+      protected $controller_namespace;
       /** Accion del controlador a ejecutar */
       protected $action;
 
@@ -26,12 +30,17 @@
        */
       public function __construct() {
          parent::__construct();
-
+    
          $route = Route::parse(Globals::get('request_uri'));
-         # MVC
-         Globals::registre('uri_params', $route['params']);
-         $this->controller = $route['controller'];
-         $this->action = $route['action'];
+         extract($route);
+
+         Globals::registre('uri_params', $params);
+
+         $this->controller_namespace = '\App\Controllers\\';
+         $this->controller_file =  Globals::get('app_path') . "/controllers/$controller.php";
+         
+         $this->controller = $controller;
+         $this->action = $action;
       }
 
       /**
@@ -40,19 +49,17 @@
        *
        *   @return Object instancia del controlador cargado
        */
-      public function getController() {
-         $file_name = ucwords($this->controller, '_');
-         $file = Globals::get('base_path') . '/app/controllers/' . $file_name . '.php';
-         if(false === file_exists($file)){
+      protected function getControllerObj() {
+         if(false === file_exists($this->controller_file)){
             $message  = "Error al cargar el controlador '$this->controller.' ";
-            $message .= "El archivo del controlador '$file' no existe";
+            $message .= "El archivo del controlador '$this->controller_file' no existe";
             trigger_error($message);
             return false;
          }
          
          # en su lugar se deja al autocargador hacer su trabajo
          # require $file;
-         $fullClassName = '\App\Controllers\\' . $file_name;
+         $fullClassName = $this->controller_namespace . $this->controller;
          return new $fullClassName;
       }
 
@@ -63,7 +70,7 @@
        *   @return void
        */
       public function run() {
-         $controller = $this->getController();
+         $controller = $this->getControllerObj();
          if($controller === false)
             return;
 

@@ -30,9 +30,10 @@
               'base_path' => realpath('')
             , 'base_url' => $this->getBaseUrl()
             , 'request_uri' => $this->getRequestUri()
+            , 'app_path' => realpath('') . '/app'
          ]);
 
-         Config::load(Globals::get('base_path') . '/app/config.json');
+         Config::load(Globals::get('app_path') . '/config.json');
          $errorHandler = new Error();
          $errorHandler->registre();
       }

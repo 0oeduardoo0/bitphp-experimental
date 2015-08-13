@@ -50,7 +50,7 @@ class Autoload
      * than last.
      * @return void
      */
-    public function addNamespace($prefix, $base_dir, $prepend = false)
+    public function add($prefix, $base_dir, $prepend = false)
     {
         // normalize namespace prefix
         $prefix = trim($prefix, '\\') . '\\';
@@ -164,9 +164,9 @@ class Autoload
 $loader = new Autoload;
 $loader->register();
 
-$loader->addNamespace('Bitphp\Core', 'bitphp/bitphp-core/src');
-$loader->addNamespace('Bitphp\Base', 'bitphp/bitphp-base/src');
-$loader->addNamespace('Bitphp\Modules', 'bitphp/bitphp-modules/src');
-$loader->addNamespace('Bitphp\Cli', 'bitphp/bitphp-cli/src');
-$loader->addNamespace('App\Models', 'app/models');
-$loader->addNamespace('App\Controllers', 'app/controllers');
+$loader->add('Bitphp\Core', 'bitphp/bitphp-core/src');
+$loader->add('Bitphp\Base', 'bitphp/bitphp-base/src');
+$loader->add('Bitphp\Modules', 'bitphp/bitphp-modules/src');
+$loader->add('Bitphp\Cli', 'bitphp/bitphp-cli/src');
+$loader->add('App\Models', 'app/models');
+$loader->add('App\Controllers', 'app/controllers');
