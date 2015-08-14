@@ -1,6 +1,6 @@
 
    [bold_red]Atencion!
    [bold_white]
-   Para mantener actualizado bitphp simplemente utiliza
-   el comando [bold_green]git pull [bold_white]recuerda tener previamente inst-
-   alado git.
+   Si instalaste bitphp via git utiliza el comando [bold_green]git pull [bold_white] para actualizar.
+
+   Si instalaste bitphp via composer ejecuta [bold_green]composer update[bold_white] para actualizar.

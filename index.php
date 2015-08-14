@@ -6,14 +6,6 @@
 
   require 'bitphp/autoload.php';
 
-  use \Bitphp\Base\MvcServer;
-
-  $server = new MvcServer();
-  $server->run();
-
-  /*
-  require 'bitphp/autoload.php';
-
   use \Bitphp\Base\MicroServer;
   use \Bitphp\Modules\Layout\Medusa;
 
@@ -25,4 +17,4 @@
              ->draw();
   });
 
-  $server->run();*/
+  $server->run();
