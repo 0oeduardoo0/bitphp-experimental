@@ -24,7 +24,7 @@
       protected $action;
 
       /**
-       *    Durante el contructor se parsea la ruta de la
+       *   Durante el constructor se parsea la ruta de la
        *   url solicitada para obtener el controlador, la
        *   accion y los parametros.
        */
@@ -45,34 +45,21 @@
 
       /**
        *   Se verifica y carga el archivo del controlador
-       *   se crea un objeto de este y se retorna
-       *
-       *   @return Object instancia del controlador cargado
-       */
-      protected function getControllerObj() {
-         if(false === file_exists($this->controller_file)){
-            $message  = "Error al cargar el controlador '$this->controller.' ";
-            $message .= "El archivo del controlador '$this->controller_file' no existe";
-            trigger_error($message);
-            return false;
-         }
-         
-         # en su lugar se deja al autocargador hacer su trabajo
-         # require $file;
-         $fullClassName = $this->controller_namespace . $this->controller;
-         return new $fullClassName;
-      }
-
-      /**
-       *   Se verifica y carga el archivo del controlador
        *   y se ejecuta la accion (metodo) solicitado
        *
        *   @return void
        */
       public function run() {
-         $controller = $this->getControllerObj();
-         if($controller === false)
+         if(false === file_exists($this->controller_file)){
+            $message  = "Error al cargar el controlador '$this->controller.' ";
+            $message .= "El archivo del controlador '$this->controller_file' no existe";
+            trigger_error($message);
             return;
+         }
+         
+         # se deja al autocargador hacer su trabajo
+         $full_class = $this->controller_namespace . $this->controller;
+         $controller = new $full_class;
 
          if(!method_exists($controller, $this->action)) {
             $message  = "La clase del controlador '$this->controller' ";

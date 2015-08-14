@@ -6,9 +6,9 @@
 
   require 'bitphp/autoload.php';
 
-  use \Bitphp\Base\HmvcServer;
+  use \Bitphp\Base\MvcServer;
 
-  $server = new HmvcServer();
+  $server = new MvcServer();
   $server->run();
 
   /*

@@ -22,10 +22,22 @@
       protected $application;
 
       /**
-       *   Sobreescribe las variables de ruta, el cntrolador,
-       *   la accion y los parametros y establece la app ejecutada
+       *   Sobrescribe las siguientes variables:
+       *
+       *   - uri_params
+       *   - app_path
+       *   - controller_namespace
+       *   - controller_file
+       *   - controller
+       *   - action
+       *
+       *   Y agrega el nombre de espacio de la aplicacion al autocargador
        */
       public function __construct() {
+         /**
+          * Ya sea al autocargador de bitphp o el de composer
+          * se llama $loader y se encuentra en el ambito global
+          */
          global $loader;
          parent::__construct();
 
