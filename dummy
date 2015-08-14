@@ -24,7 +24,13 @@
       $flag = Arguments::flag('dump');
 
       if($flag !== false) {
-         Error::dump();
+         $removed = Error::dump();
+
+         if($removed === false) {
+            StandardIO::output("   [back_red]permiso denegado");
+            return;
+         }
+
          StandardIO::output("   [back_green]Se limpio el registro de errores");
          return;
       }

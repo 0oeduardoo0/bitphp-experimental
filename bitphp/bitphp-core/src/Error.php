@@ -5,6 +5,7 @@
    use \Exception;
    use \Bitphp\Core\Globals;
    use \Bitphp\Core\Config;
+   use \Bitphp\Modules\Utilities\File;
 
    /**
     *   Clase para registrar los error_handlers de bitphp
@@ -21,10 +22,14 @@
       
       private $errors;
 
+      /**
+       *  Registra las funciones para el manejo de errores
+       *
+       */
       public function registre() {
           ini_set('display_errors', 0);
           error_reporting(E_ALL);
-          # se definen las funciones para el manejo de errores
+          
           set_error_handler(array($this, 'globalErrorHandler'));
           register_shutdown_function(array($this, 'fatalErrorHandler'));
 
@@ -45,6 +50,10 @@
        *                  con el identificador del error si este se guardo
        */
       private function log($code, $message, $file, $line, $trace) {
+         $save_log = Config::param('errors.log');
+         if(false === $save_log)
+          return false;
+
          # id es un hash md5 formado por la fecha y un numero aleatorio
          $date = date(DATE_ISO8601);
          $identifier  = md5($date . rand(0, 9999));
@@ -63,15 +72,10 @@
 
          $log = json_encode($log) . PHP_EOL;
 
-         $save_log = Config::param('errors.log');
-         if(false !== $save_log)
-          $save_log = true;
+         $log_file = Globals::get('base_path') . '/olimpus/log/errors.log';
+         File::append($log_file, $log);
 
-         if(!$save_log)
-          return false;
-
-         $done = @error_log($log, 3, Globals::get('base_path') . '/olimpus/log/errors.log');
-         return $done ? $identifier : false;
+         return $identifier;
       }
 
       /**

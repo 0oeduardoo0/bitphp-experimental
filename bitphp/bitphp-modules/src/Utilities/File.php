@@ -4,6 +4,13 @@
 
    class File {
 
+      public static function createDirIfDontExists($file) {
+         $dir = dirname($file);
+         
+         if(!is_dir($dir))
+            mkdir($dir, 0777, true);
+      }
+
       public static function explore($dir, $recursive = true) {
          if(!is_dir($dir)) {
             if(is_file($dir)) {
@@ -39,13 +46,27 @@
       }
 
       public static function write( $file, $content ) {
-         $dir = dirname($file);
-         
-         if(!is_dir($dir))
-               mkdir($dir, 0777, true);
+         self::createDirIfDontExists($file);
+         file_put_contents($file, $content);
+      }
 
-         $file = fopen( $file, 'w' );
-         fwrite( $file, $content );
-         fclose( $file );
+      public static function append($file, $content) {
+         self::createDirIfDontExists($file);
+         file_put_contents($file, $content, FILE_APPEND);
+      }
+
+      public static function prepend($file, $content) {
+         $_content = '';
+         if(file_exists($file))
+            $_content = file_get_contents($file);
+
+         self::write($file, $content . $_content);
+      }
+
+      public static function read($file) {
+         if(!file_exists($file))
+            return false;
+
+         return file_get_contents($file);
       }
    }

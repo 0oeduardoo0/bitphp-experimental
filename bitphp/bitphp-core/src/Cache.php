@@ -4,6 +4,7 @@
 
    use \Bitphp\Core\Config;
    use \Bitphp\Core\Globals;
+   use \Bitphp\Modules\Utilities\File;
 
    /**
     *   Clase para manipular el cache de bitphp.
@@ -83,9 +84,9 @@
 
          $file = self::generateName($data);
 
-         if(file_exists($file)) {
+         if(false !== ($content = File::read($file))) {
             if((fileatime($file) + self::cacheTime()) >= time())
-               return file_get_contents($file);
+               return $content;
 
             unlink($file);
          }
@@ -106,8 +107,6 @@
             return false;
          
          $file = self::generateName($data);
-         $writer = fopen($file, 'w');
-         fwrite($writer, $content);
-         fclose($writer);
+         File::write($file, $content);
       }
    }

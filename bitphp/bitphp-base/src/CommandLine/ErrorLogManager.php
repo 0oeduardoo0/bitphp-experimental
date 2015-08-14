@@ -13,7 +13,7 @@
       }
 
       public static function dump() {
-         File::write('olimpus/log/errors.log', '');
+         return @unlink('olimpus/log/errors.log');
       }
 
       public static function search($search) {
