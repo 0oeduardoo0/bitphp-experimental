@@ -1,6 +1,4 @@
 
-   [bold_red]Atencion!
+   [bold_red]Actualizacion disponible!
    [bold_white]
-   Si instalaste bitphp via git utiliza el comando [bold_green]git pull [bold_white] para actualizar.
-
-   Si instalaste bitphp via composer ejecuta [bold_green]composer update[bold_white] para actualizar.
+   Utiliza el comando [bold_green]git pull [bold_white] para actualizar.
