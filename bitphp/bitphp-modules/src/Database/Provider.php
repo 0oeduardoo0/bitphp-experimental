@@ -4,11 +4,24 @@
 
    use \Bitphp\Core\Config;
 
+   /**
+    *   Clase base para los módulos de conexion a bases de datos
+    *   se encarga de setear los parametros como usuario, pass y host
+    *
+    *   @author Eduardo B Romero
+    */
    abstract class Provider {
+      /** Usuario para la conexión */
       public $user;
+      /** Contraseña para la conexión */
       public $pass;
+      /** Host para la conexión */
       public $host;
 
+      /**
+       *  Lee la configuracion en busca del user, host y pass
+       *  si no los encuentra setea los valores por defecto  
+       */
       public function __construct() {
 
          # Si no se encuentran en la configuración setea valores default
@@ -34,6 +47,9 @@
        *   alias, si es así trata de obtener el nombre real
        *   de la base para dicho alias, si no existe manda error
        *   y retorna nulo, si no es un alias retorna el valor original
+       *
+       *   @param string $alias Cadena a examinar
+       *   @return string nombre real de la base de datos
        */
       protected function realName($alias) {
          $is_alias = strpos($alias, 'alias.');

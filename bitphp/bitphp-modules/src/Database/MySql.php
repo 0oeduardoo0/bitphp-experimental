@@ -8,24 +8,36 @@
    /**
     *   Proporciona una capa de abstracción para una conexión 
     *   a basesde datos mysql a través de PDO
+    *
+    *   @author Eduardo B Romero
     */   
    class MySql extends Provider {
       
+      /** Declaracion de la consulta realizada */
       private $statement;
+      /** Objeto PDO */
       public $pdo;
 
       public function __construct() {
          parent::__construct();
       }
 
+      /**
+       * Realiza la conexión a la base de datos indicada a través de PDO
+       *
+       * @param string $name Nombre o alias de la base de datos
+       * @return void
+       */
       public function database($name) {
          # obtiene el nombre real, por si es un alias
          $name = $this->realName($name);
          $params = 'mysql:host='.$this->host.';dbname='.$name.';charset=utf8';
          $this->pdo = new PDO($params, $this->user, $this->pass);
-         return $this;
       }
 
+      /**
+       * 
+       */
       public function execute($query) {
          $this->statement = $this->pdo->query($query);
          return $this;
