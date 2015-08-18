@@ -23,6 +23,8 @@
       protected $output_buffer;
       /** Contenido de la vista antes de generarse */
       protected $source;
+      /** Indica si las plantillas se llen desde el directorio raiz de la app */
+      public $force_root;
 
       /**
        *  Durante el contructor se inicializan las propiedades
@@ -32,6 +34,7 @@
          $this->clean();
          $this->output_buffer = 'empty';
          $this->mime = '.php';
+         $this->force_root = false;
 
          //set cache angent
          Cache::$agent = 'views';
@@ -104,6 +107,7 @@
        */
       public function required($name) {
          $loader = new View();
+         $loader->force_root = $this->force_root;
          $loader->load($name)->with($this->variables)->draw();
          $loader = null;
       }
@@ -126,7 +130,12 @@
             return $this;
           }
 
-         $file = Globals::get('app_path') . "/views/$name" . $this->mime;
+         $base_path = Globals::get('app_path');
+
+         if($this->force_root)
+           $base_path = Globals::get('base_path') . '/app';
+
+         $file = $base_path . "/views/$name" . $this->mime;
          if(false === file_exists($file)) {
             $message  = "No se pudo cargar la vista '$name.' ";
             $message .= "El fichero '$file' no existe";

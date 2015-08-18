@@ -5,6 +5,7 @@
    use \Exception;
    use \Bitphp\Core\Globals;
    use \Bitphp\Core\Config;
+   use \Bitphp\Modules\Layout\Medusa;
    use \Bitphp\Modules\Utilities\File;
 
    /**
@@ -21,6 +22,8 @@
    class Error {
       
       private $errors;
+      private $file;
+      private $medusa;
 
       /**
        *  Registra las funciones para el manejo de errores
@@ -35,6 +38,8 @@
 
           $this->errors = array();
           $this->file = new File();
+          $this->medusa = new Medusa();
+          $this->medusa->force_root = true;
       }
       
       /**
@@ -74,7 +79,7 @@
          $log = json_encode($log) . PHP_EOL;
 
          $log_file = Globals::get('base_path') . '/olimpus/log/errors.log';
-         File::append($log_file, $log);
+         $this->file->append($log_file, $log);
 
          return $identifier;
       }
@@ -127,10 +132,14 @@
               $display = true;
 
             if($display) {
-               $errors = $this->errors;
-               require Globals::get('base_path') . '/olimpus/system/error_message.php';
+               $this->medusa->load('__pages/Error')
+                            ->with([
+                              'errors' => $this->errors
+                            ])
+                            ->draw();
             } else {
-               require Globals::get('base_path') . '/olimpus/static_pages/404.php';
+               $this->medusa->load('__pages/NotFound')
+                            ->draw();
             }
          }
       }

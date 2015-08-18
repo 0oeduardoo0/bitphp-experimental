@@ -3,6 +3,7 @@
   namespace Bitphp\Modules\Http;
 
   use \Bitphp\Core\Globals;
+  use \Bitphp\Modules\Layout\Medusa;
 
   class Response {
 
@@ -68,7 +69,14 @@
       }
 
       if($delay > 0) {
-        require Globals::get('base_path') . '/olimpus/static_pages/redir.php';
+        $medusa = new Medusa();
+        $medusa->force_root = true;
+        $medusa->load('__pages/Redirection')
+               ->with([
+                    'url' => $url
+                  , 'delay' => $delay
+                ])
+               ->draw();
         return;
       }
 

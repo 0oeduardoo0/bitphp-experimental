@@ -13,8 +13,7 @@
    define('MT_STATEMENTS_START', '/:(if|elseif|for|foreach)(\s+)+(.*)/');
    define('MT_STATEMENTS_END', '/:(endif|endforeach|endfor)/');
    define('MT_ELSE', '/:else/');
-   define('MT_INCLUDE_W_PARAMS', '/:(require|include)(\s+)?(\S+)(\s+)?(\s+)*(\[(.*)\]|:args)/Usx');
-   define('MT_INCLUDE_WO_PARAMS', '/:(require|include)(\s+)?(\S+)/');
+   define('MT_INCLUDE', '/:(require|include)(\s+)?(\S+)/');
    define('MT_SHORT_ARRAY', '/\$(\w+)\.(\w+)/');
    define('MT_ARGS', '/:args/');
    define('MT_BASE_LINK', '/:base/');
@@ -61,7 +60,13 @@
             return $source;
 
          $name = $extends[2][0];
-         $file = Globals::get('app_path') . "/views/$name" . $this->mime;
+
+         $base_path = Globals::get('app_path');
+         if($this->force_root)
+            $base_path = Globals::get('base_path') . '/app';
+
+         $file = $base_path . "/views/$name" . $this->mime;
+
          if(!file_exists($file)) {
             $message  = "No se pudo heredar la plantilla $name. ";
             $message .= "No exite $file";
@@ -93,8 +98,7 @@
             , MT_STATEMENTS_START
             , MT_STATEMENTS_END
             , MT_ELSE
-            , MT_INCLUDE_W_PARAMS
-            , MT_INCLUDE_WO_PARAMS
+            , MT_INCLUDE
             , MT_SHORT_ARRAY
             , MT_ARGS
             , MT_BASE_LINK
@@ -112,8 +116,7 @@
             , '<?php $1 ($3): ?>'
             , '<?php $1; ?>'
             , '<?php else: ?>'
-            , '<?php \Bitphp\Modules\Layout\Medusa::quick(\'$3\', $6); ?>'
-            , '<?php \Bitphp\Modules\Layout\Medusa::quick(\'$3\'); ?>'
+            , '<?php $this->required($3); ?>'
             , '$$1["$2"]'
             , '$this->variables'
             , '$_ROUTE[\'base_url\']'
