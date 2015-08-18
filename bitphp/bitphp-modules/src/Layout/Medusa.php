@@ -61,7 +61,7 @@
             return $source;
 
          $name = $extends[2][0];
-         $file = Globals::get('base_path') . "/app/views/$name" . $this->mime;
+         $file = Globals::get('app_path') . "/views/$name" . $this->mime;
          if(!file_exists($file)) {
             $message  = "No se pudo heredar la plantilla $name. ";
             $message .= "No exite $file";

@@ -1,6 +1,6 @@
 <?php 
 
-   namespace Bitphp\Base\HmvcServer;
+   namespace Bitphp\Modules\Hmvc;
 
    /**
     *   Recibe la url solicitada y en base a ella identifica 
@@ -58,25 +58,6 @@
       }
 
       /**
-       *  Retorna los parametros (variables)
-       *  en la uri recibida, qué son los elemntos
-       *  a partir del 4to, en caso de no haber ninguno
-       *  retorna un array vacio
-       *
-       *  @param array $uri Uri solicitada
-       *  @return array parametros presentes en la uri
-       */
-      private static function uriParams($uri) {
-         if(3 < count($uri)) {
-            $params = $uri;
-            unset($params[0], $params[1], $params[2]);
-            return array_values($params);
-         }
-
-         return array();
-      }
-
-      /**
        *  Recibe la uri solicitada y retorna un arreglo 
        *  con los componentes de esta
        *
@@ -84,14 +65,13 @@
        *  @return array Arreglo asociativo de los elementos de la uri
        */
       public static function parse($request_uri) {
-         $request_uri = trim($request_uri, '/');
-         $request_uri = explode('/', $request_uri);
+         $request_uri = trim($request_uri, '.');
+         $request_uri = explode('.', $request_uri);
 
          $result = [
               'application' => self::application($request_uri)
             , 'controller' => self::controller($request_uri)
             , 'action' => self::action($request_uri)
-            , 'params' => self::uriParams($request_uri)
          ];
 
          return $result;

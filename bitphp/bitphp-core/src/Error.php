@@ -27,13 +27,14 @@
        *
        */
       public function registre() {
-          ini_set('display_errors', 0);
+          #ini_set('display_errors', 0);
           error_reporting(E_ALL);
           
           set_error_handler(array($this, 'globalErrorHandler'));
           register_shutdown_function(array($this, 'fatalErrorHandler'));
 
           $this->errors = array();
+          $this->file = new File();
       }
       
       /**
