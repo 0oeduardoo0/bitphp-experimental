@@ -12,6 +12,10 @@
       protected $where_statement;
       public $table;
 
+      public function __construct($table) {
+         $this->table = $table;
+      }
+
       public function __call($method, $args) {
          if(preg_match('/(and|or)Where/', $method, $match)) {
             array_shift($match);

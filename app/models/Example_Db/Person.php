@@ -3,6 +3,7 @@
    namespace App\Models\Example_Db;
 
    use \Bitphp\Modules\Database\Rocket\Orm;
+   use \Bitphp\Modules\Database\Rocket\QueryBuilder;
 
    class Person extends Orm {
 
@@ -19,6 +20,11 @@
       public $address = 'varchar(80) not null';
       public $name  = 'varchar(80) not null';
       public $age   = 'int(2) not null';
+
+      public function __construct() {
+        parent::__construct();
+        $this->builder = new QueryBuilder($this->table);
+      }
 
       public function foo() {
          echo $this->builder->insert([

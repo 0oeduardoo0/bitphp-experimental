@@ -2,8 +2,6 @@
 
    namespace Bitphp\Modules\Database\Rocket;
 
-   use \Bitphp\Modules\Database\Rocket\QueryBuilder;
-
    /**
     *  Orm sencillo, por defecto proporciona metodos para CRUD
     *
@@ -24,9 +22,6 @@
       public function __construct() {
          /* Implemented on mapper */
          $this->map();
-
-         $this->builder = new QueryBuilder();
-         $this->builder->table = $this->table;
       }
 
       /**
