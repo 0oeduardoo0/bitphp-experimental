@@ -8,6 +8,11 @@
    :var nerrors count($errors)
 
    <h2>Ocurrieron {{ $nerrors }} errores!</h2>
+
+   /* for check if error log have permissions */
+   :if !$errors[0]['identifier']
+      <h4>No se pudieron registrar los errores, verifica qué el servidor tenga permisos de escritura en la carpeta <b>{{ $_ROUTE['base_path'] }}/olimpus</b></h4>
+   :endif
    <hr>
    :foreach $errors as $error
       <h4>

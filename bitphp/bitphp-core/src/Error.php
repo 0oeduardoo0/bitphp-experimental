@@ -79,7 +79,8 @@
          $log = json_encode($log) . PHP_EOL;
 
          $log_file = Globals::get('base_path') . '/olimpus/log/errors.log';
-         $this->file->append($log_file, $log);
+         if(false === $this->file->append($log_file, $log))
+          return false;
 
          return $identifier;
       }

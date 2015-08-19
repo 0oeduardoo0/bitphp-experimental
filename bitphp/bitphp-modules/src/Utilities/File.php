@@ -6,7 +6,7 @@
 
       public static function createDirIfDontExists($file) {
          $dir = dirname($file);
-         
+        
          if(!is_dir($dir))
             mkdir($dir, 0777, true);
       }
@@ -47,12 +47,12 @@
 
       public static function write( $file, $content ) {
          self::createDirIfDontExists($file);
-         file_put_contents($file, $content);
+         return @file_put_contents($file, $content);
       }
 
       public static function append($file, $content) {
          self::createDirIfDontExists($file);
-         file_put_contents($file, $content, FILE_APPEND);
+         return @file_put_contents($file, $content, FILE_APPEND);
       }
 
       public static function prepend($file, $content) {
