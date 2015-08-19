@@ -2,6 +2,8 @@
 
    namespace Bitphp\Modules\Database\Rocket;
 
+   use \Bitphp\Modules\Database\Rocket\QueryBuilder;
+
    /**
     *  Orm sencillo, por defecto proporciona metodos para CRUD
     *
@@ -13,6 +15,8 @@
       protected $table;
       /** Nombre de la base de datos */
       protected $database;
+      /** Generador de consultas */
+      protected $builder;
 
       /**
        *   El constructor manda llamar la funcion map del trait
@@ -20,6 +24,9 @@
       public function __construct() {
          /* Implemented on mapper */
          $this->map();
+
+         $this->builder = new QueryBuilder();
+         $this->builder->table = $this->table;
       }
 
       /**

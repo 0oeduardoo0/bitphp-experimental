@@ -19,4 +19,12 @@
       public $address = 'varchar(80) not null';
       public $name  = 'varchar(80) not null';
       public $age   = 'int(2) not null';
+
+      public function foo() {
+         echo $this->builder->insert([
+                                'foo' => 'faa'
+                              , 'lel' => 'ja'
+                            ])
+                            ->make();
+      }
    }
