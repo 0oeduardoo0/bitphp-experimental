@@ -16,3 +16,7 @@
    [bold_white]php dummy trash                     [white]- Lista los respaldos de la papelera
    [bold_white]php dummy trash --remove-app, -r    [white]- Mueve la aplicacion a la basura
    [bold_white]php dummy trash --backup, -b <name> [white]- Restaura los ficheros de respaldo
+ 
+ [bold_green]Cache management
+   [bold_white]php dummy cache            [white]- Indica cuantos  archivos hay en cache
+   [bold_white]php dummy cache --dump, -d [white]- Limpia el cache

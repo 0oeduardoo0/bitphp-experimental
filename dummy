@@ -3,13 +3,35 @@
    require 'bitphp/autoload.php';
    
    use \Bitphp\Core\Trash;
+   use \Bitphp\Core\Globals;
    use \Bitphp\Core\ErrorLogManager as Error;
    use \Bitphp\Base\CommandLine;
    use \Bitphp\Modules\Cli\Arguments;
    use \Bitphp\Modules\Cli\StandardIO;
    use \Bitphp\Modules\Utilities\TimeDiff;
+   use \Bitphp\Modules\Utilities\File;
 
    $cli = new CommandLine();
+
+   $cli->doCommand('dummy cache', function(){
+      $cached = File::explore(Globals::get('base_path') . '/olimpus/cache');
+      array_shift($cached);
+
+      StandardIO::output(' ~ ' . count($cached) . ' ficheros en cache');
+
+      $flag = Arguments::flag('dump');
+      if($flag !== false) {
+         foreach ($cached as $file) {
+            $deleted = @unlink($file);
+            if($deleted == false) {
+               StandardIO::output(' [back_red]~ permiso denegado');
+               return;
+            }
+         }
+
+         StandardIO::output(' ~ El cache fue limpiado');
+      }
+   });
 
    $cli->doCommand('dummy error', function() {
       $flag = Arguments::flag('id');
