@@ -6,7 +6,7 @@
    
    class TimeDiff {
 
-    function getTimeAgo($string_date) {
+    public static function getTimeAgo($string_date) {
 
         $date_1 = new DateTime($string_date);
         $date_2 = new DateTime();
@@ -20,7 +20,6 @@
 
         if((int)$days_ago > 1) {
             $time_ago = date('j F, Y',strtotime($string_date));
-
         } else if((int)$hours_ago > 1) {
             $time_ago = $hours_ago . ' horas';
         } else if((int)$mins_ago > 1 && (int)$mins_ago < 59) {

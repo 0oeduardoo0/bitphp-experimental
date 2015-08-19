@@ -30,7 +30,7 @@
        *
        */
       public function registre() {
-          #ini_set('display_errors', 0);
+          ini_set('display_errors', 0);
           error_reporting(E_ALL);
           
           set_error_handler(array($this, 'globalErrorHandler'));
@@ -138,6 +138,7 @@
                             ])
                             ->draw();
             } else {
+               header('HTTP/1.1 404 Not Found');
                $this->medusa->load('__pages/NotFound')
                             ->draw();
             }

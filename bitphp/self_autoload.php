@@ -164,6 +164,7 @@ class Autoload
 $loader = new Autoload;
 $loader->register();
 
+$loader->add('Bitphp\Exceptions', 'bitphp/bitphp-exceptions/src');
 $loader->add('Bitphp\Core', 'bitphp/bitphp-core/src');
 $loader->add('Bitphp\Base', 'bitphp/bitphp-base/src');
 $loader->add('Bitphp\Modules', 'bitphp/bitphp-modules/src');

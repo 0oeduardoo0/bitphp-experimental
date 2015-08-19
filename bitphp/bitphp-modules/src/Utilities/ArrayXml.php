@@ -1,9 +1,9 @@
 <?php 
 
-    namespace BitPHP\Modules\Utilities;
+   namespace BitPHP\Modules\Utilities;
 
    use \DOMDocument;
-     use \SimpleXMLElement;
+   use \SimpleXMLElement;
 
    class ArrayXml {
 

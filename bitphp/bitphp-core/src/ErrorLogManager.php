@@ -1,6 +1,6 @@
 <?php
 
-   namespace Bitphp\Base\CommandLine;
+   namespace Bitphp\Core;
 
    use \Bitphp\Modules\Utilities\TimeDiff;
    use \Bitphp\Modules\Utilities\File;

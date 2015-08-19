@@ -2,12 +2,12 @@
 
    require 'bitphp/autoload.php';
    
+   use \Bitphp\Core\Trash;
+   use \Bitphp\Core\ErrorLogManager as Error;
    use \Bitphp\Base\CommandLine;
    use \Bitphp\Modules\Cli\Arguments;
    use \Bitphp\Modules\Cli\StandardIO;
-   use \Bitphp\Base\CommandLine\Trash;
    use \Bitphp\Modules\Utilities\TimeDiff;
-   use \Bitphp\Base\CommandLine\ErrorLogManager as Error;
 
    $cli = new CommandLine();
 
@@ -42,7 +42,37 @@
    $cli->doCommand('dummy trash', function(){
       $flag = Arguments::flag('remove-app');
       if($flag !== false) {
-         Trash::remove();
+         StandardIO::output(' ~ Analizando...');
+         $files = Trash::scan();
+
+         if(empty($files)){
+            StandardIO::output(' ~ Ningun archivo para eliminar...');
+            return;
+         }
+
+         foreach ($files as $file) {
+            StandardIO::output("[bold_red]   $file");
+            usleep(25000);
+         }
+
+         StandardIO::output(' ~ ' . count($files) . " archivos para mover a la basura");
+         StandardIO::output(" ~ Mover a papelera? [bold_blue][s/N] ", null, false);
+
+         $option = strtolower(StandardIO::input());
+         if($option != 's')
+            return;
+
+         StandardIO::output("\n   Se almacenara un respaldo en papelera");
+         StandardIO::output("   ingresa un nombre para dicho respaldo");
+         StandardIO::output("\n ~ Nombre de respaldo (opcional): ", null, false);
+
+         $input = StandardIO::input();
+         $backup_name = $input != '' ? $input : Random::string(6);
+
+         $backup = Trash::remove($files, $backup_name);
+
+         StandardIO::output(" ~ Backup en $backup");
+         StandardIO::output(" ~ Ficheros de aplicacion removidos");
          return;
       }
 
@@ -57,13 +87,50 @@
          StandardIO::output(" ~ Restaurando el backup [bold_blue]$name");
 
          $force_restore = Arguments::flag('force-restore');
-         Trash::restore($name, $force_restore);
+         $restore = Trash::restore($name, $force_restore);
+
+         if($restore === false) {
+            StandardIO::output(" [back_red]~ El respaldo $name no existe");
+            return;
+         }
+
+         extract($restore);
+         StandardIO::output(" $count archivos para restaurar...");
+
+         foreach ($files['restored'] as $file) {
+            StandardIO::output("[bold_green] ~ $file ... Restaurado");
+            usleep(25000);
+         }
+
+         foreach ($files['to_overwrite'] as $file) {
+            StandardIO::output("[bold_yellow] ~ $file ... Ya existe");
+            usleep(25000);
+         }
+
+         foreach ($files['missing'] as $file) {
+            StandardIO::output("[bold_red] ~ $file ... Sin respaldo");
+            usleep(25000);
+         }
+
+         if(!empty($files['to_overwrite'])) {
+            StandardIO::output(" [bold_red]~ Algunos archivos no fueron restaurados");
+            StandardIO::output(" [bold_red]~ Intenta con trash --force-restore");
+         }
+
+         if(!empty($files['missing'])) {
+            StandardIO::output(" [bold_red]~ Algunos archivos de respaldo fueron eliminados, ya no se podra restaurar por completo");
+         }
+
          return;
       }
 
       #sin ninguna bandera solo lista los backups
       StandardIO::output(" ~ Lista de respaldos en la papelera");
       $backups = Trash::getBackupsList();
+
+      if(empty($backups))
+         StandardIO::output(" ~ Sin respaldos");
+
       foreach ($backups as $backup => $data) {
          $files = $data['meta']['count'];
          $date  = TimeDiff::getTimeAgo($data['meta']['date']);

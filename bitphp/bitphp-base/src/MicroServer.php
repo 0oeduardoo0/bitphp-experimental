@@ -8,6 +8,8 @@
    use \Bitphp\Core\Globals;
    use \Bitphp\Base\MicroServer\Route;
    use \Bitphp\Base\MicroServer\Pattern;
+   use \Bitphp\Exceptions\HttpMethodException;
+   use \Bitphp\Exceptions\UndefinedUriException;
 
    /**
     *   Implementacion del servidor base para crear 
@@ -115,7 +117,7 @@
        */
       public function run() {
          if(!isset($this->routes[$this->method]))
-            throw new Exception('Unused request method');
+            throw new HttpMethodException('Unused request method');
 
          foreach ($this->routes[$this->method] as $route => $callback) {
             $pattern = Pattern::create($route);
@@ -126,6 +128,6 @@
             }
          }
 
-         throw new Exception('Unused request uri');
+         throw new UndefinedUriException('Unused request uri');
       }
    }

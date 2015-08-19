@@ -13,9 +13,7 @@
       return empty(self::$statusCode) ? 200 : self::$statusCode;
     }
 
-    protected static function getStatusMessage() {
-      $code = empty(self::$statusCode) ? 200 : self::$statusCode;
-
+    public static function status($code) {
       $status = [
         200 => 'OK',  
         201 => 'Created',  
@@ -38,35 +36,26 @@
         return;
       }
 
-      return $status[ $code ];
-    }
-
-    public static function status( $code ) {
-      self::$statusCode = $code;
+      $statusMessage = $status[$code];
+      header( "HTTP/1.1 $code $statusMessage" );
     }
 
     public static function xml( $data ) {
-      $statusCode = self::$statusCode;
-      $statusMessage = self::getStatusMessage();
-
-      header( "HTTP/1.1 $statusCode $statusMessage" );
       header( 'Content-Type: application/xml;charset=utf-8' );
       echo $data;
     }
 
     public static function json( $data ) {
-      $statusCode = self::getStatusCode();
-      $statusMessage = self::getStatusMessage();
+      if(is_array($data))
+        $data = json_encode($data);
 
-      header( "HTTP/1.1 $statusCode $statusMessage" );
       header( 'Content-Type: application/json;charset=utf-8' );
       echo $data;
     }
 
     public static function redir( $url, $delay = 0 ) {
-      if(!preg_match('/^(\w+)(\:\/\/)(.*)$/', $url)) {
+      if(!preg_match('/^(\w+)(\:\/\/)(.*)$/', $url))
         $url = Globals::get('base_url') . $url;
-      }
 
       if($delay > 0) {
         $medusa = new Medusa();

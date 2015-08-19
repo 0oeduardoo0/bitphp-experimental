@@ -1,5 +1,5 @@
 {
-   "errors.display": true,
+   "errors.display": false,
    "errors.log": true,
    "database.pass": "holamundo",
    "database.alias.system": "dbexample",
@@ -7,5 +7,8 @@
    "views.cache.time": 15,
    "views.cache": false,
    "token.signature": "Holamundo123_",
-   "token.life": 30
+   "token.life": 30,
+   "trash.ignore": [
+      "(.*)/app/views/__pages/(.*)"
+   ]
 }
