@@ -36,13 +36,21 @@
       }
 
       /**
-       * 
+       *  Ejecuta la consulta indicada a traves del POD
+       *
+       *  @param string $query Consulta que se va a ejecutar
+       *  @return MySql Retorna un objeto de si mismo
        */
       public function execute($query) {
          $this->statement = $this->pdo->query($query);
          return $this;
       }
 
+      /**
+       *  Retorna el mensaje error (si se produjo)
+       *
+       *  @return mixed Mensaje de error, false si no lo hubo
+       */
       public function error() {
          $error = $this->pdo->errorInfo()[2];
 
@@ -52,6 +60,11 @@
          return $error;
       }
 
+      /**
+       *  Retorna un array asociativo de la consulta
+       *  
+       *  @return array Resultado de la consulta 
+       */
       public function result() {
          if(false !== ($error = $this->error())) {
             trigger_error($error);

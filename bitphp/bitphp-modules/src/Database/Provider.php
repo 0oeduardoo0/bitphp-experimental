@@ -67,8 +67,34 @@
          return $name;
       }
 
+      /**
+       * Debe inicializar la conexión a la base de datos indicada, debe hacer uso de realName()
+       * para obtener el nombre real de la bd
+       *
+       * @param string $name Nombre o alias de la base de datos
+       * @return void
+       */
       abstract public function database($name);
+
+      /**
+       *  Debe ejecutar la consulta indicada
+       *
+       *  @param string $query Consulta que se va a ejecutar
+       *  @return Object Retorna un objeto de si mismo
+       */
       abstract public function execute($query);
+
+      /**
+       *  Retorna el mensaje error de la consulta (si se produjo)
+       *
+       *  @return mixed Mensaje de error, false si no lo hubo
+       */
       abstract public function error();
+
+      /**
+       *  Retorna un array asociativo de la consulta
+       *  
+       *  @return array Resultado de la consulta 
+       */
       abstract public function result();
    }

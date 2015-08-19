@@ -20,7 +20,7 @@
          {{ $error.message }} - <i>{{ $error.file }} linea {{ $error.line }}</i>
       </h4>
       :if $error.identifier
-         <pre> $ php dummy error -id {{ $error.identifier }}</pre>
+         <pre> $ php dummy error --id {{ $error.identifier }}</pre>
       :endif
    :endforeach
 :endblock
