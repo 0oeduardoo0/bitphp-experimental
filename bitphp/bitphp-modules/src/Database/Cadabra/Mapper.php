@@ -122,10 +122,10 @@
 
          if(!isset($this->dont_create)) {
           if(!$this->databaseExists($database))
-              $this->createDatabase();
+              $this->createDatabase($database);
          
           if(!$this->tableExists($table))
-              $this->createTable();
+              $this->createTable($table);
          }
 
          $this->database->database($database);
