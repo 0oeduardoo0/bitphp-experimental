@@ -13,8 +13,6 @@
       protected $table;
       /** Nombre de la base de datos */
       protected $database;
-      /** Nombre de la base de datos */
-      protected $database_name;
       /** Generador de consultas */
       protected $builder;
 
@@ -52,7 +50,7 @@
        */
       public function toArray() {
         if(isset($this->array_vars))
-          return $this->array_vars
+          return $this->array_vars;
 
         return array();
       }
@@ -184,6 +182,36 @@
          }
 
          return null;
+      }
+
+      public function findAll($item, $value, $order = null) {
+         $objects = array();
+         $result = $this->database
+                        ->execute("SELECT * FROM $this->table WHERE $item='$value'" . $order)
+                        ->result();
+
+         if(false !== ($error = $this->database->error())) {
+            trigger_error($error);
+            return null;
+         }
+
+         if(!empty($result)) {
+            foreach ($result as $array) {
+               $objects[] = $this->factory($array);
+            }
+
+            return $objects;
+         }
+
+         return null;
+      }
+
+      public function drop() {
+        $this->database->execute("DROP TABLE $this->table");
+      }
+
+      public function truncate() {
+        $this->database->execute("TRUNCATE $this->table");
       }
 
       /**

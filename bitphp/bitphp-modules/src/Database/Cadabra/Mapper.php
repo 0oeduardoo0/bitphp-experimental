@@ -19,24 +19,24 @@
        *
        * @return bool
        */
-      private function tableExists() {
-         $this->database->execute("SELECT 1 FROM $this->table LIMIT 1");
+      private function tableExists($name) {
+         $this->database->execute("SELECT 1 FROM $name LIMIT 1");
          if($this->database->error())
             return false;
 
          return true;
       }
 
-      private function databaseExists() {
-        $this->database->execute("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$this->database_name'");
+      private function databaseExists($name) {
+        $this->database->execute("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$name'");
         if(empty($this->database->result()))
           return false;
 
         return true;
       }
 
-      private function createDatabase() {
-        $query = "CREATE DATABASE IF NOT EXISTS $this->database_name DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
+      private function createDatabase($name) {
+        $query = "CREATE DATABASE IF NOT EXISTS $name DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
         $this->database->execute($query);
       }
 
@@ -45,7 +45,7 @@
        * 
        * @return void
        */
-      private function createTable() {
+      private function createTable($name) {
          $properties = get_class_vars(get_class($this));
          
          if(!isset($properties['primary']))
@@ -55,7 +55,7 @@
          $engine  = isset($properties['engine'])  ? $properties['engine']  : 'innodb';
          $charset = isset($properties['charset']) ? $properties['charset'] : 'utf8';
 
-         $query = "CREATE TABLE IF NOT EXISTS $this->table (";
+         $query = "CREATE TABLE IF NOT EXISTS $name (";
 
          foreach ($properties as $property => $value) {
             $reflection = new ReflectionProperty(get_class($this), $property);
@@ -74,6 +74,9 @@
          $query .= "PRIMARY KEY ($primary) ) engine=$engine DEFAULT charset=$charset";
 
          $this->database->execute($query);
+
+         if(false !== ($error = $this->database->error()))
+          trigger_error($error);
       }
 
       /**
@@ -110,18 +113,22 @@
 
          $this->database = new $this->provider;
          
-         $this->database_name = $this->databaseName();
+         $database = $this->databaseName();
+         $table = $this->tableName();
+
          if(isset($this->alias))
-            $this->database_name = "alias.$db_name";
+            $database = "alias.$db_name";
 
 
-         if(!$this->databaseExists())
-            $this->createDatabase();
-
-         $this->database->database($this->database_name);
-         $this->table = $this->tableName();
+         if(!isset($this->dont_create)) {
+          if(!$this->databaseExists($database))
+              $this->createDatabase();
          
-         if(!$this->tableExists())
-            $this->createTable();
+          if(!$this->tableExists($table))
+              $this->createTable();
+         }
+
+         $this->database->database($database);
+         $this->table = $table;
       }
    }
