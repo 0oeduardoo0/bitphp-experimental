@@ -13,6 +13,8 @@
       protected $table;
       /** Nombre de la base de datos */
       protected $database;
+      /** Nombre de la base de datos */
+      protected $database_name;
       /** Generador de consultas */
       protected $builder;
 

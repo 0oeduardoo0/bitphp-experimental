@@ -7,6 +7,8 @@
 
   $server = new MicroServer();
 
+  $foo = new \App\Models\Example_Db\Person();
+
   $server->doGet('/', function() {
     Medusa::quick('welcome');
   });

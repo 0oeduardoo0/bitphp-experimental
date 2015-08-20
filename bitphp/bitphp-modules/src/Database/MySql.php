@@ -20,6 +20,9 @@
 
       public function __construct() {
          parent::__construct();
+
+         $params = 'mysql:host='.$this->host.';charset=utf8';
+         $this->pdo = new PDO($params, $this->user, $this->pass);
       }
 
       /**
@@ -31,8 +34,7 @@
       public function database($name) {
          # obtiene el nombre real, por si es un alias
          $name = $this->realName($name);
-         $params = 'mysql:host='.$this->host.';dbname='.$name.';charset=utf8';
-         $this->pdo = new PDO($params, $this->user, $this->pass);
+         $this->pdo->query("USE $name");
       }
 
       /**

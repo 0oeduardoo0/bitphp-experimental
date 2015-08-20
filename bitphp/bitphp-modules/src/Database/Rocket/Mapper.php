@@ -3,6 +3,7 @@
    namespace Bitphp\Modules\Database\Rocket;
 
    use \ReflectionProperty;
+   use \PDOException;
 
    /**
     * Trait para el mapeo relacional
@@ -22,6 +23,19 @@
             return false;
 
          return true;
+      }
+
+      private function databaseExists() {
+        $this->database->execute("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$this->database_name'");
+        if(empty($this->database->result()))
+          return false;
+
+        return true;
+      }
+
+      private function createDatabase() {
+        $query = "CREATE DATABASE IF NOT EXISTS $this->database_name DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
+        $this->database->execute($query);
       }
 
       /**
@@ -65,7 +79,7 @@
        *
        * @return string Nombre de la base de datos
        */
-      private static function dataBaseName() {
+      private static function databaseName() {
          $parts = explode('\\', __CLASS__);
          return strtolower($parts[2]);
       }
@@ -94,13 +108,17 @@
 
          $this->database = new $this->provider;
          
-         $db_name = $this->dataBaseName();
+         $this->database_name = $this->databaseName();
          if(isset($this->alias))
-            $db_name = "alias.$db_name";
+            $this->database_name = "alias.$db_name";
 
-         $this->database->database($db_name);
+
+         if(!$this->databaseExists())
+            $this->createDatabase();
+
+         $this->database->database($this->database_name);
          $this->table = $this->tableName();
-
+         
          if(!$this->tableExists())
             $this->createTable();
       }
