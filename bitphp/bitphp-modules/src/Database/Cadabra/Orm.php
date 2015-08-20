@@ -1,6 +1,6 @@
 <?php
 
-   namespace Bitphp\Modules\Database\Rocket;
+   namespace Bitphp\Modules\Database\Cadabra;
 
    /**
     *  Orm sencillo, por defecto proporciona metodos para CRUD
@@ -32,7 +32,7 @@
        * @param array $properties Array asocietivo para convertir en propiedades
        * @return Object objeto de la clase (hijo) con los valores del array seteados como propiedades
        */
-      private function generateObject($properties) {
+      protected function factory($properties) {
          $class = get_class($this);
          $object = new $class;
 
@@ -40,7 +40,21 @@
             $object->$property = $value;
          }
 
+         $object->{"array_vars"} = $properties;
          return $object;
+      }
+
+      /**
+       *  Retorna un array de las propiedades de la clase, despues
+       *  de qué la clase paso por factory()
+       *
+       *  @return array
+       */
+      public function toArray() {
+        if(isset($this->array_vars))
+          return $this->array_vars
+
+        return array();
       }
 
       /**
@@ -62,7 +76,7 @@
 
          if(null === $conditional) {
             if(!isset($this->$property)) {
-               trigger_error("No se pudo actualizar, '$property' no es una propiedad");
+               trigger_error("No se pudo actualizar, '$property' no es un campo");
                return false;
             }
 
@@ -76,7 +90,7 @@
             return false;
          }
 
-         return true;
+         return $this;
       }
 
       /**
@@ -104,7 +118,7 @@
             return false;
          }
 
-         return true;
+         return $this->factory($params);
       }
 
       /**
@@ -120,7 +134,7 @@
                                   ->result();
 
          if(!empty($result))
-            return $this->generateObject($result[0]);
+            return $this->factory($result[0]);
 
          return null;
       }
@@ -163,7 +177,7 @@
 
          if(!empty($result)) {
             foreach ($result as $array) {
-               $objects[] = $this->generateObject($array);
+               $objects[] = $this->factory($array);
             }
 
             return $objects;
