@@ -9,6 +9,12 @@
    "token.signature": "Holamundo123_",
    "token.life": 30,
    "trash.ignore": [
-      "(.*)/app/views/__pages/(.*)"
+      "(.*)/app/views/__pages/(.*)",
+      "(.*)/app/config.json",
+      "(.*)/app/.htaccess",
+      "(.*)/public/css/bootstrap.css",
+      "(.*)/public/js/bootstrap.js",
+      "(.*)/public/js/jquery.js",
+      "(.*)/index.php"
    ]
 }

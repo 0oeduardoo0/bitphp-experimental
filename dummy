@@ -10,6 +10,7 @@
    use \Bitphp\Modules\Cli\StandardIO;
    use \Bitphp\Modules\Utilities\TimeDiff;
    use \Bitphp\Modules\Utilities\File;
+   use \Bitphp\Modules\Utilities\Random;
 
    $cli = new CommandLine();
 
