@@ -120,15 +120,16 @@
             $database = "alias.$db_name";
 
 
-         if(!isset($this->dont_create)) {
-          if(!$this->databaseExists($database))
-              $this->createDatabase($database);
-         
-          if(!$this->tableExists($table))
-              $this->createTable($table);
-         }
+         $create = isset($this->dont_create) ? false : true;
+
+         if($create && !$this->databaseExists($database))
+            $this->createDatabase($database);
 
          $this->database->database($database);
+
+         if($create && !$this->tableExists($table))
+            $this->createTable($table);
+
          $this->table = $table;
       }
    }
