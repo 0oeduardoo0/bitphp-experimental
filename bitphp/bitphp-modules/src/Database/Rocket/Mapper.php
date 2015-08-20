@@ -7,6 +7,8 @@
 
    /**
     * Trait para el mapeo relacional
+    *
+    * ¡Es importante qué el usuario de la conexion tenga privilegios para crear bases de datos y tablas!
     * 
     * @author Eduardo B Romero
     */
