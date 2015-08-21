@@ -64,7 +64,7 @@
        * @param mixed $conditional Valor para la condicional
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
-      public function update($params, $property = 'id', $conditional = null) {
+      public function update($params, $conditional = null, $property = 'id') {
          $values = array();
          foreach ($params as $key => $value) {
             $values[] = "$key='$value'";
@@ -72,14 +72,12 @@
 
          $values = implode(',', $values);
 
-         if(null === $conditional) {
-            if(!isset($this->$property)) {
-               trigger_error("No se pudo actualizar, '$property' no es un campo");
-               return false;
-            }
-
-            $conditional = $this->$property;
+         if(!isset($this->$property)) {
+            trigger_error("No se pudo actualizar, '$property' no es un campo");
+            return false;
          }
+
+         $conditional = $this->$property;
 
          $query = "UPDATE $this->table SET $values WHERE $property='$conditional'";
          $this->database->execute($query);
@@ -144,8 +142,15 @@
        * @param string $item Elemento para la condicional, id por defecto
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
-      public function delete($value, $item='id') {
-         $query = "DELETE FROM $this->table WHERE $item='$value'";
+      public function delete($conditional=null, $property='id') {
+         if(!isset($this->$property)) {
+            trigger_error("No se pudo borrar, '$property' no es un campo");
+            return false;
+         }
+
+         $conditional = $this->$property;
+
+         $query = "DELETE FROM $this->table WHERE $property='$conditional'";
          $this->database->execute($query)
                         ->result();
 
