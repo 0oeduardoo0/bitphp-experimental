@@ -165,7 +165,7 @@
        */
       public function all($order = null) {
          $objects = array();
-         $result = $this->database->execute("SELECT * FROM $this->table" . $order)
+         $result = $this->database->execute("SELECT * FROM $this->table " . $order)
                                   ->result();
 
          if(false !== ($error = $this->database->error())) {

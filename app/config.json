@@ -7,7 +7,7 @@
    "views.cache.time": 15,
    "views.cache": false,
    "token.signature": "Holamundo123_",
-   "token.life": 30,
+   "token.life": 300,
    "trash.ignore": [
       "(.*)/app/views/__pages/(.*)",
       "(.*)/app/config.json",
