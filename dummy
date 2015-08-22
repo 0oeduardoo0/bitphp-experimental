@@ -15,11 +15,35 @@
 
    $cli = new CommandLine();
 
-   $cli->doCommand('dummy migration seed ($subject)', function($subject) {
-      $seeds = Migration::seed($subject);
-      foreach ($seeds as $seed) {
-         StandardIO::output($seed);
-         usleep(25000);
+   $cli->doCommand('dummy migration ($action) ($subject)', function($action, $subject) {
+      switch ($action) {
+         case 'seed':
+            $seeds = Migration::seed($subject);
+            foreach ($seeds as $seed) {
+               StandardIO::output(' ~ ' . $seed);
+               usleep(25000);
+            }
+         break;
+
+         case 'up':
+            $migrations = Migration::up($subject);
+            foreach ($migrations as $migration) {
+               StandardIO::output(' ~ ' . $migration);
+               usleep(25000);
+            }
+         break;
+
+         case 'down':
+            $migrations = Migration::down($subject);
+            foreach ($migrations as $migration) {
+               StandardIO::output(' ~ ' . $migration);
+               usleep(25000);
+            }
+         break;
+         
+         default:
+            StandardIO::output('[bold_red] ~ Opcion de migracion invalida...');
+         break;
       }
    });
 

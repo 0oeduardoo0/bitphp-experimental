@@ -40,7 +40,7 @@
 
         $properties = get_class_vars(get_class($this));
 
-        $map['primary_keys'] = isset($properties['primary_keys']) ? $properties['primary_keys'] : '';
+        $map['primary_key'] = isset($properties['primary_key']) ? $properties['primary_key'] : '';
         $map['keys'] = isset($properties['keys']) ? $properties['keys'] : '';
 
         $map['columns'] = array();

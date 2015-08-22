@@ -34,9 +34,9 @@
         return true;
       }
 
-      private function createDatabase($name) {
+      public function createDatabaseQuery($name) {
         $query = "CREATE DATABASE IF NOT EXISTS $name DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
-        $this->database->execute($query);
+        return $query;
       }
 
       /**
@@ -44,35 +44,38 @@
        * 
        * @return void
        */
-      private function createTable($name) {
+      public function createTableQuery($name) {
          $properties = get_class_vars(get_class($this));
-         
-         $primary = $properties['primary'];
-         $engine  = isset($properties['engine'])  ? $properties['engine']  : 'innodb';
-         $charset = isset($properties['charset']) ? $properties['charset'] : 'utf8';
 
-         $query = "CREATE TABLE IF NOT EXISTS $name (";
+         $query = PHP_EOL . "CREATE TABLE IF NOT EXISTS $name (" . PHP_EOL;
+
+         $qkeys = array();
 
          foreach ($properties as $property => $value) {
             $reflection = new ReflectionProperty(get_class($this), $property);
             if($reflection->isPublic())
-              $query .= "$property $value, ";
+              $qkeys[] = "  $property $value";
          }
 
          if(isset($properties['keys'])) {
-          $keys    = explode(',', $properties['keys']);
+          $keys = explode(',', $properties['keys']);
           
           foreach ($keys as $key) {
-            $query .= "KEY $key ($key), ";
+            $qkeys[] = "  KEY $key ($key)";
           }
          }
 
-         $query .= "PRIMARY KEY ($primary) ) engine=$engine DEFAULT charset=$charset";
+         if(isset($properties['primary_key'])) {
+          $keys    = explode(',', $properties['primary_key']);
+          
+          foreach ($keys as $key) {
+            $qkeys[] = "  PRIMARY KEY ($key)";
+          }
+         }
 
-         $this->database->execute($query);
-
-         if(false !== ($error = $this->database->error()))
-          trigger_error($error);
+         $query .= implode(", " . PHP_EOL, $qkeys);
+         $query .= PHP_EOL . ") engine=innodb DEFAULT charset=utf8;";
+         return $query;
       }
 
       /**
@@ -82,15 +85,35 @@
        */
       public function up() {
          $this->database = new $this->provider;
-
          $this->database_name = $this->database->realName($this->database_name);
 
-         if(!$this->databaseExists($this->database_name))
-            $this->createDatabase($this->database_name);
+         if(!$this->databaseExists($this->database_name)) {
+            $query = $this->createDatabaseQuery($this->database_name);
+            $this->database->execute($query);
+
+            if(false !== ($error = $this->database->error()))
+              trigger_error($error);
+         }
 
          $this->database->database($this->database_name);
 
-         if($this->tableExists($this->table_name))
-            $this->createTable($this->table_name);
+         if(!$this->tableExists($this->table_name)) {
+            $query = $this->createTableQuery($this->table_name);
+            $this->database->execute($query);
+            
+            if(false !== ($error = $this->database->error()))
+              trigger_error($error);
+         }
+      }
+
+      public function down() {
+        $this->database = new $this->provider;
+        $this->database_name = $this->database->realName($this->database_name);
+        
+        $this->database->database($this->database_name);
+        $this->database->execute("DROP TABLE $this->table_name");
+
+        if(false !== ($error = $this->database->error()))
+              trigger_error($error);
       }
    }
