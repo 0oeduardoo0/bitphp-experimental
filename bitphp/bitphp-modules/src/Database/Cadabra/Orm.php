@@ -64,7 +64,7 @@
        * @param mixed $conditional Valor para la condicional
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
-      public function update($params, $conditional = null, $property = 'id') {
+      public function update($params, $property = 'id') {
          $values = array();
          foreach ($params as $key => $value) {
             $values[] = "$key='$value'";
@@ -142,7 +142,7 @@
        * @param string $item Elemento para la condicional, id por defecto
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
-      public function delete($conditional=null, $property='id') {
+      public function delete($property='id') {
          if(!isset($this->$property)) {
             trigger_error("No se pudo borrar, '$property' no es un campo");
             return false;
