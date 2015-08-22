@@ -72,7 +72,7 @@
 
          self::$life = Config::param('token.life');
          if(null === self::$life)
-            self::$life = 999999; //seconds
+            self::$life = 300; //seconds
 
          self::$algorithm = Config::param('token.algorithm');
          if(null === self::$algorithm)
