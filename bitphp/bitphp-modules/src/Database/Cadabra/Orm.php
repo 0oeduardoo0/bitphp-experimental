@@ -19,9 +19,22 @@
       /**
        *   El constructor manda llamar la funcion map del trait
        */
-      public function __construct() {
-         /* Implemented on mapper */
-         $this->map();
+      public function __construct($connect=true) {
+         if($connect) {
+            /* Implemented on mapper */
+            $map = $this->map();
+
+            if(!$map['provider'])
+              trigger_error('No se indico proveedor de base de datos');
+
+            $this->database = new $map['provider'];
+            $this->database->database($map['database']);
+
+            if(false !== ($error = $this->database->error()))
+              trigger_error($error);
+
+            $this->table = $map['table'];
+         }
       }
 
       /**

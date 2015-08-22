@@ -41,14 +41,17 @@
          return true;
       }
 
-      public static function start($life=0) {
+      public static function start($remember=false) {
          self::$initialized = true;
          $token = Token::encode(self::$payload);
+
+         // 94608000 seconds in 3 years
+         $life = $remember ? time() + (94608000) : 0;
          setcookie('__atoken', $token, $life, '/', null, false, true);
       }
 
       public static function stop() {
-         setcookie('__atoken', '', time() - 1, '/', null, false, true);  
+         setcookie('__atoken', '', time() - 1);  
       }
 
       public static function initialized() {

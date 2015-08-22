@@ -171,3 +171,4 @@ $loader->add('Bitphp\Modules', 'bitphp/bitphp-modules/src');
 $loader->add('Bitphp\Cli', 'bitphp/bitphp-cli/src');
 $loader->add('App\Models', 'app/models');
 $loader->add('App\Controllers', 'app/controllers');
+$loader->add('App\Migrations', 'app/migrations');

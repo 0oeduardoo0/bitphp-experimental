@@ -51,7 +51,7 @@
        *   @param string $alias Cadena a examinar
        *   @return string nombre real de la base de datos
        */
-      protected function realName($alias) {
+      public function realName($alias) {
          $is_alias = strpos($alias, 'alias.');
          if(false === $is_alias)
             return $alias;

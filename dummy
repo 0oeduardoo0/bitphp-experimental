@@ -11,8 +11,17 @@
    use \Bitphp\Modules\Utilities\TimeDiff;
    use \Bitphp\Modules\Utilities\File;
    use \Bitphp\Modules\Utilities\Random;
+   use \Bitphp\Modules\Database\Migration;
 
    $cli = new CommandLine();
+
+   $cli->doCommand('dummy migration seed ($subject)', function($subject) {
+      $seeds = Migration::seed($subject);
+      foreach ($seeds as $seed) {
+         StandardIO::output($seed);
+         usleep(25000);
+      }
+   });
 
    $cli->doCommand('dummy cache', function(){
       $cached = File::explore(Globals::get('base_path') . '/olimpus/cache');

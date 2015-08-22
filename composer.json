@@ -32,7 +32,8 @@
             "Bitphp\\Cli\\": "bitphp/bitphp-cli/src",
             "Bitphp\\Exceptions\\": "bitphp/bitphp-exceptions/src",
             "App\\Models\\": "app/models",
-            "App\\Controllers\\": "app/controllers"
+            "App\\Controllers\\": "app/controllers",
+            "App\\Migrations\\": "app/migrations"
         }
     },
     "config": {
