@@ -2,7 +2,6 @@
 
    namespace Bitphp\Base;
 
-   use \Bitphp\Core\Config;
    use \Bitphp\Core\Globals;
    use \Bitphp\Modules\Cli\Arguments;
    use \Bitphp\Base\CommandLine\Pattern;
@@ -27,7 +26,6 @@
        *   en las variables globales de bitphp
        */
       public function __construct() {
-         Config::load(realpath('') . '/app/config.json');
          Globals::registre('base_path', realpath(''));
          $this->commands = array();
          $this->binded = array();

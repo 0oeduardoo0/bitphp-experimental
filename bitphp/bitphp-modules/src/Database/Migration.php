@@ -2,6 +2,7 @@
    
    namespace Bitphp\Modules\Database;
 
+   use \Bitphp\Core\Config;
    use \Bitphp\Core\Globals;
    use \Bitphp\Modules\Utilities\File;
 
@@ -50,6 +51,8 @@
       }
 
       protected function upOrDown($subject, $action) {
+         Config::load(Globals::get('base_path') . '/migrations/config.json');
+
          $tables = array();
 
          list($database, $table) = explode('/', $subject);
