@@ -51,7 +51,7 @@
       }
 
       protected function upOrDown($subject, $action) {
-         Config::load(Globals::get('base_path') . '/migrations/config.json');
+         Config::load(Globals::get('base_path') . '/app/config.json');
 
          $tables = array();
 
