@@ -57,7 +57,7 @@
               $qkeys[] = "  $property $value";
          }
 
-         if(isset($properties['keys'])) {
+         if(!empty($properties['keys'])) {
           $keys = explode(',', $properties['keys']);
           
           foreach ($keys as $key) {
@@ -65,7 +65,7 @@
           }
          }
 
-         if(isset($properties['primary_key'])) {
+         if(!empty($properties['primary_key'])) {
           $keys    = explode(',', $properties['primary_key']);
           
           foreach ($keys as $key) {
