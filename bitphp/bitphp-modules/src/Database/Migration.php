@@ -77,11 +77,11 @@
 
                if($action == 'up') {
                   $seed->up();
-                  $tables[] = "Up $class...";
                } else {
                   $seed->down();
-                  $tables[] = "Down $class...";
                }
+
+               $tables[] = $class;
             }
          }
 

@@ -1,14 +1,18 @@
 <?php
 
-  require 'bitphp/autoload.php';
+/**
+ * Bitphp Framework
+ */
 
-  use \Bitphp\Base\MicroServer;
-  use \Bitphp\Modules\Layout\Medusa;
+require 'bitphp/autoload.php';
 
-  $server = new MicroServer();
+use \Bitphp\Base\MicroServer;
+use \Bitphp\Modules\Layout\Medusa;
 
-  $server->doGet('/', function() {
-    Medusa::quick('welcome');
-  });
+$server = new MicroServer();
 
-  $server->run();
+$server->doGet('/', function() {
+   Medusa::quick('welcome');
+});
+
+$server->run();

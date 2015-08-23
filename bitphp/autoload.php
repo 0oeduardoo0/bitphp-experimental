@@ -1,11 +1,10 @@
 <?php
 
 $loader = null;
-
-// Si existe el cargador de composer lo utiliza
+// if composer loader exists, use it
 if(file_exists('vendor/autoload.php')) {
     $loader = require 'vendor/autoload.php';
 } else {
-   //si no, usa su propio cargador
-    require 'bitphp/self_autoload.php';
+   // if not, use the bitphp's loader
+    $loader = require 'bitphp/self_autoload.php';
 }
