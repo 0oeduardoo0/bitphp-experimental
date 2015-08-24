@@ -2,8 +2,6 @@
 
    namespace Bitphp\Modules\Utilities;
 
-   // see https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Benchmark.php
-
    class Benchmark {
       
       protected static $points = array();

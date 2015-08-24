@@ -1,6 +1,6 @@
 <?php
 
-   namespace Bitphp\Modules;
+   namespace Bitphp\Modules\Hmvc;
 
    use \Bitphp\Core\Globals;
    use \Bitphp\Modules\Hmvc\Route;
@@ -9,7 +9,7 @@
     *    Clase qué permite realizar llamadas HMVC
     *    para una aplicación modular
     */
-   class Hmvc {
+   class Service {
 
       private static $environment_backup;
 

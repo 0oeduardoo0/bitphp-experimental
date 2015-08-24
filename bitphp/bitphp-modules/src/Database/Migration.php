@@ -78,7 +78,8 @@
                if($action == 'up') {
                   $seed->up();
                } else {
-                  $seed->down();
+                  $drop_db = ($table == '') ? true : false;
+                  $seed->down($drop_db);
                }
 
                $tables[] = $class;

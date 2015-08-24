@@ -57,16 +57,24 @@
               $qkeys[] = "  $property $value";
          }
 
-         if(!empty($properties['keys'])) {
-          $keys = explode(',', $properties['keys']);
+         if(!empty($properties['index'])) {
+          $keys = explode('|', $properties['keys']);
           
           foreach ($keys as $key) {
-            $qkeys[] = "  KEY $key ($key)";
+            $qkeys[] = "INDEX $key";
+          }
+         }
+
+         if(!empty($properties['keys'])) {
+          $keys = explode('|', $properties['keys']);
+          
+          foreach ($keys as $key) {
+            $qkeys[] = "FOREIGN KEY $key";
           }
          }
 
          if(!empty($properties['primary_key'])) {
-          $keys    = explode(',', $properties['primary_key']);
+          $keys    = explode('|', $properties['primary_key']);
           
           foreach ($keys as $key) {
             $qkeys[] = "  PRIMARY KEY ($key)";
@@ -106,12 +114,21 @@
          }
       }
 
-      public function down() {
+      public function down($drop_db=false) {
         $this->database = new $this->provider;
         $this->database_name = $this->database->realName($this->database_name);
         
+        if($drop_db) {
+          $this->database->execute("DROP DATABASE IF EXISTS $this->database_name");
+
+          if(false !== ($error = $this->database->error()))
+              trigger_error($error);
+
+          return;
+        }
+
         $this->database->database($this->database_name);
-        $this->database->execute("DROP TABLE $this->table_name");
+        $this->database->execute("DROP TABLE IF EXISTS $this->table_name");
 
         if(false !== ($error = $this->database->error()))
               trigger_error($error);
