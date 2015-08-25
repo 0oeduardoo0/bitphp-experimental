@@ -12,7 +12,7 @@
 
       public static function elapsedTime($point1='start', $point2='end', $decimals=4) {
          if(!isset(self::$points[$point1]))
-            self::$points[$point1] = $_SERVER['REQUEST_TIME_FLOAT'];;
+            self::$points[$point1] = $_SERVER['REQUEST_TIME_FLOAT'];
 
          if(!isset(self::$points[$point2]))
             self::$points[$point2] = microtime(true);

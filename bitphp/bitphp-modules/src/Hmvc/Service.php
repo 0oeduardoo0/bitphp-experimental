@@ -35,8 +35,8 @@
           */
          global $loader;
 
-         $loader->add("\\App\\Modules\\$application\\Models", "app/modules/$application/models");
-         $loader->add("\\App\\Modules\\$application\\Controllers", "app/modules/$application/controllers");
+         $loader->add("\\$application\\Models", "app/modules/$application/models");
+         $loader->add("\\$application\\Controllers", "app/modules/$application/controllers");
       }
 
       /**
@@ -58,7 +58,7 @@
          }
 
          # se deja al autocargador hacer su trabajo
-         $full_class = "\\App\\Modules\\$application\\Controllers\\" . $controller;
+         $full_class = "\\$application\\Controllers\\" . $controller;
          $controller = new $full_class;
 
          if(!method_exists($controller, $action)) {

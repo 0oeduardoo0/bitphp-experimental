@@ -1,4 +1,4 @@
-:extends __pages/Main
+:extends Main
 
 :block title
    ({{ $delay }}) Redirection..

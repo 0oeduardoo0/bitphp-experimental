@@ -23,8 +23,8 @@
       protected $output_buffer;
       /** Contenido de la vista antes de generarse */
       protected $source;
-      /** Indica si las plantillas se llen desde el directorio raiz de la app */
-      public $force_root;
+      /** Para usar un directorio alternativo para las vistas */
+      public $views_path;
 
       /**
        *  Durante el contructor se inicializan las propiedades
@@ -98,6 +98,20 @@
       }
 
       /**
+       *  Crea la ruta absoluta al archivo de la vista
+       *
+       *  @param string $name Nombre de la vista
+       *  @return string Ruta completa al archivo de la vista
+       */
+      protected function getViewPath($name) {
+        if(!$this->views_path)
+          $this->views_path = Globals::get('app_path') . "/views";
+
+        $path = $this->views_path . "/$name" . $this->mime;
+        return $path;
+      }
+
+      /**
        *  Metodo para cargar desde una vista. 
        *  Envia como parametros a la vista los qué recibioreon
        *  la vista qué lo usa.
@@ -107,7 +121,7 @@
        */
       public function required($name) {
          $loader = new View();
-         $loader->force_root = $this->force_root;
+         $loader->views_path = $this->views_path;
          $loader->load($name)->with($this->variables)->draw();
          $loader = null;
       }
@@ -117,7 +131,7 @@
        *   lo agrega a la lista de ficheros, si no existe 
        *   manda error
        *
-       *  @param mixed $name Nombre(s) de la(s) vista(s), sin extension
+       *  @param mixed $name Nombre(s) de la(s) vista(s)
        *  @return Object Retorna la instancia de la clase
        */
       public function load($name) {
@@ -130,17 +144,11 @@
             return $this;
           }
 
-         $base_path = Globals::get('app_path');
+         $file = $this->getViewPath($name);
 
-         if($this->force_root)
-           $base_path = Globals::get('base_path') . '/app';
-
-         $file = $base_path . "/views/$name" . $this->mime;
          if(false === file_exists($file)) {
-            $message  = "No se pudo cargar la vista '$name.' ";
-            $message .= "El fichero '$file' no existe";
-            trigger_error($message);
-            return false;
+            trigger_error("No se pudo cargar la vista '$name'. El archivo '$file' no existe");
+            return $this;
          }
 
          $this->loaded[] = $file;

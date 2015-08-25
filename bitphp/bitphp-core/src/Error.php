@@ -30,7 +30,7 @@
        *
        */
       public function registre() {
-          ini_set('display_errors', 0);
+          #ini_set('display_errors', 0);
           error_reporting(E_ALL);
           
           set_error_handler(array($this, 'globalErrorHandler'));
@@ -39,7 +39,7 @@
           $this->errors = array();
           $this->file = new File();
           $this->medusa = new Medusa();
-          $this->medusa->force_root = true;
+          $this->medusa->views_path = Globals::get('base_path') . '/olimpus/system/pages';
       }
       
       /**
@@ -128,19 +128,19 @@
          }
 
          if (!empty($this->errors)) {
-            $display = Config::param('errors.display');
+            $display = Config::param('errors.debug');
             if(false !== $display)
               $display = true;
 
             if($display) {
-               $this->medusa->load('__pages/Error')
+               $this->medusa->load('Error')
                             ->with([
                               'errors' => $this->errors
                             ])
                             ->draw();
             } else {
                header('HTTP/1.1 404 Not Found');
-               $this->medusa->load('__pages/NotFound')
+               $this->medusa->load('NotFound')
                             ->draw();
             }
          }

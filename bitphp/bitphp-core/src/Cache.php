@@ -48,7 +48,7 @@
        *  @return integer
        */
       protected static function cacheTime() {
-        $cachetime = Config::param(self::$agent . '.cache.time');
+        $cachetime = Config::param(self::$agent . '.cache.life');
 
         if( null === $cachetime || !is_integer($cachetime) )
           $cachetime = 300; //senconds

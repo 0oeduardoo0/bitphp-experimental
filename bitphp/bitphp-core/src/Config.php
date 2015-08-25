@@ -10,7 +10,7 @@
     */
    class Config {
 
-      protected static $params;
+      protected static $params = array();
 
       /**
        *   verifica y carga el archivo
@@ -23,7 +23,10 @@
          if( file_exists($file) ) {
             $content = file_get_contents($file);
             #usa la variable global para no cargar el archivo una y otra vez
-            self::$params = json_decode($content, true);
+            $params = json_decode($content, true);
+            foreach ($params as $param => $value) {
+              self::$params[$param] = $value;
+            }
          }
       }
 

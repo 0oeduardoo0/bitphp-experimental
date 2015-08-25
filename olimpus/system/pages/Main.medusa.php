@@ -5,7 +5,7 @@
 </title>
 :css bootstrap
 <style type="text/css">
-   .jumbotron {
+   .jumbotron.blue {
       color: #fff;
       background-color: #556370;
    }
@@ -28,7 +28,7 @@
    }
 </style>
 <div class="bitphp-error-main">
-   <div class="jumbotron">
+   <div class="jumbotron blue">
       <div class="container">
          <div class="row" align="center">
             <img src="{{ :base }}/public/img/unicorn.png" class="sticker">

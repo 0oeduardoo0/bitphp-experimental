@@ -1,7 +1,5 @@
-:extends __pages/Main
-
 :block title
-   404 | Page not found
+   404 Not Found
 :endblock
 
 :block main

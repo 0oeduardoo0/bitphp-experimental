@@ -66,15 +66,15 @@
       }
 
       protected static function loadConfig() {
-         self::$signature_key = Config::param('token.signature');
+         self::$signature_key = Config::param('auth.token.signature');
          if(null === self::$signature_key)
             self::$signature_key = 'R4nd0mStr1ng_';
 
-         self::$life = Config::param('token.life');
+         self::$life = Config::param('auth.token.life');
          if(null === self::$life)
             self::$life = 300; //seconds
 
-         self::$algorithm = Config::param('token.algorithm');
+         self::$algorithm = Config::param('auth.token.algorithm');
          if(null === self::$algorithm)
             self::$algorithm = 'HS256';
 
