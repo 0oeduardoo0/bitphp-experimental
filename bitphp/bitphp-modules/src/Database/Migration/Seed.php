@@ -9,9 +9,18 @@
     * 
     * @author Eduardo B Romero
     */
-   trait Seed {
+   abstract class Seed {
 
-      private $database;
+      protected $database;
+
+      protected $indexes = array();
+      protected $keys = array();
+      protected $primary_keys = array();
+      protected $foreign_keys = array();
+      protected $fields = array();
+
+      public $executed_queries = array();
+
 
       /**
        * Determina si la tabla de la clase existe
@@ -19,7 +28,11 @@
        * @return bool
        */
       private function tableExists($name) {
-         $this->database->execute("SELECT 1 FROM $name LIMIT 1");
+         $query = "SELECT 1 FROM $name LIMIT 1";
+         $this->database->execute($query);
+
+         $this->executed_queries[] = $query;
+
          if($this->database->error())
             return false;
 
@@ -27,11 +40,35 @@
       }
 
       private function databaseExists($name) {
-        $this->database->execute("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$name'");
+        $query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$name'";
+        $this->database->execute($query);
+
+        $this->executed_queries[] = $query;
+
         if(empty($this->database->result()))
           return false;
 
         return true;
+      }
+
+      protected function field($data) {
+        $this->fields[] = "  $data";
+      }
+
+      protected function primaryKey($field) {
+        $this->primary_keys[] = "  PRIMARY KEY ($field)";
+      }
+
+      protected function foreignKey($data) {
+        $this->foreign_keys[] = "  FOREIGN KEY $data";
+      }
+
+      protected function key($data) {
+        $this->keys[] = "  KEY $data";
+      }
+
+      protected function index($data) {
+        $this->indexes[] = "  INDEX $data";
       }
 
       public function createDatabaseQuery($name) {
@@ -45,44 +82,19 @@
        * @return void
        */
       public function createTableQuery($name) {
-         $properties = get_class_vars(get_class($this));
 
-         $query = PHP_EOL . "CREATE TABLE IF NOT EXISTS $name (" . PHP_EOL;
+         $table_query = array_merge(
+              $this->fields
+            , $this->primary_keys
+            , $this->foreign_keys
+            , $this->keys
+            , $this->indexes
+         );
 
-         $qkeys = array();
-
-         foreach ($properties as $property => $value) {
-            $reflection = new ReflectionProperty(get_class($this), $property);
-            if($reflection->isPublic())
-              $qkeys[] = "  $property $value";
-         }
-
-         if(!empty($properties['index'])) {
-          $keys = explode('|', $properties['keys']);
-          
-          foreach ($keys as $key) {
-            $qkeys[] = "INDEX $key";
-          }
-         }
-
-         if(!empty($properties['keys'])) {
-          $keys = explode('|', $properties['keys']);
-          
-          foreach ($keys as $key) {
-            $qkeys[] = "FOREIGN KEY $key";
-          }
-         }
-
-         if(!empty($properties['primary_key'])) {
-          $keys    = explode('|', $properties['primary_key']);
-          
-          foreach ($keys as $key) {
-            $qkeys[] = "  PRIMARY KEY ($key)";
-          }
-         }
-
-         $query .= implode(", " . PHP_EOL, $qkeys);
+         $query = PHP_EOL . "CREATE TABLE IF NOT EXISTS $name (" . PHP_EOL;         
+         $query .= implode(", " . PHP_EOL, $table_query);
          $query .= PHP_EOL . ") engine=innodb DEFAULT charset=utf8;";
+
          return $query;
       }
 
@@ -99,6 +111,8 @@
             $query = $this->createDatabaseQuery($this->database_name);
             $this->database->execute($query);
 
+            $this->executed_queries[] = $query;
+
             if(false !== ($error = $this->database->error()))
               trigger_error($error);
          }
@@ -108,6 +122,8 @@
          if(!$this->tableExists($this->table_name)) {
             $query = $this->createTableQuery($this->table_name);
             $this->database->execute($query);
+
+            $this->executed_queries[] = $query;
             
             if(false !== ($error = $this->database->error()))
               trigger_error($error);
@@ -119,7 +135,10 @@
         $this->database_name = $this->database->realName($this->database_name);
         
         if($drop_db) {
-          $this->database->execute("DROP DATABASE IF EXISTS $this->database_name");
+          $query = "DROP DATABASE IF EXISTS $this->database_name";
+          $this->database->execute($query);
+
+          $this->executed_queries[] = $query;
 
           if(false !== ($error = $this->database->error()))
               trigger_error($error);
@@ -127,10 +146,15 @@
           return;
         }
 
+        $query = "DROP TABLE IF EXISTS $this->table_name";
         $this->database->database($this->database_name);
-        $this->database->execute("DROP TABLE IF EXISTS $this->table_name");
+        $this->database->execute($query);
+
+        $this->executed_queries[] = $query;
 
         if(false !== ($error = $this->database->error()))
               trigger_error($error);
       }
+
+      abstract public function setup();
    }

@@ -26,22 +26,22 @@ $cli = new CommandLine();
  * make seeds, for up or down the user for db connection in config.json need 
  * privileges
  */
-$cli->doCommand('dummy migration ($action) ($subject)', function($action, $subject) {
+$cli->doCommand('dummy migrations ($action) ($subject)', function($action, $subject) {
    switch ($action) {
-      //action to generate seeds
-      case 'seed':
-         $seeds = Migration::seed($subject);
-         foreach ($seeds as $seed) {
-            StandardIO::output(' ~ Semilla creada ... ' . $seed);
-            usleep(25000);
-         }
-      break;
 
       //action to up migrations using the diaposable seeds
       case 'up':
          $migrations = Migration::up($subject);
-         foreach ($migrations as $migration) {
+         
+         foreach ($migrations['tables'] as $migration) {
             StandardIO::output(' ~ Creando tabla a partir de ' . $migration);
+            usleep(25000);
+         }
+
+         StandardIO::output(" ~ Consultas ejecutadas:\n");
+
+         foreach ($migrations['queries'] as $query) {
+            StandardIO::output("$query\n");
             usleep(25000);
          }
       break;
@@ -49,8 +49,16 @@ $cli->doCommand('dummy migration ($action) ($subject)', function($action, $subje
       //remove the tables using the diaposable seeds
       case 'down':
          $migrations = Migration::down($subject);
-         foreach ($migrations as $migration) {
+
+         foreach ($migrations['tables'] as $migration) {
             StandardIO::output(' ~ Eliminando tabla a partir de ' . $migration);
+            usleep(25000);
+         }
+
+         StandardIO::output(" ~ Consultas ejecutadas:\n");
+
+         foreach ($migrations['queries'] as $query) {
+            StandardIO::output("\n$query\n");
             usleep(25000);
          }
       break;

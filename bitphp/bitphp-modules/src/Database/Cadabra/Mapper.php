@@ -33,28 +33,6 @@
       }
 
       /**
-       *  Genera un mapa de los campos de la tabla
-       */
-      public function tableMap() {
-        $map = array();
-
-        $properties = get_class_vars(get_class($this));
-
-        $map['primary_key'] = isset($properties['primary_key']) ? $properties['primary_key'] : '';
-        $map['keys'] = isset($properties['keys']) ? $properties['keys'] : '';
-
-        $map['columns'] = array();
-
-        foreach ($properties as $property => $value) {
-          $reflection = new ReflectionProperty(get_class($this), $property);
-          if($reflection->isPublic())
-            $map['columns'][$property] = $value;
-        }
-
-        return $map;
-      }
-
-      /**
        * Crea el objeto del proveedor en $this->database
        * Determina el nombre de la base de datos y la conecta a través del proveedor
        * Determina el nombre de la base de datos y la setea en $this->database
