@@ -59,8 +59,8 @@
 
       if($delay > 0) {
         $medusa = new Medusa();
-        $medusa->views_path = Globals::get('base_path') . '/olimpus/system/__pages';
-        $medusa->load('__pages/Redirection')
+        $medusa->views_path = Globals::get('base_path') . '/olimpus/system/pages';
+        $medusa->load('Redirection')
                ->with([
                     'url' => $url
                   , 'delay' => $delay

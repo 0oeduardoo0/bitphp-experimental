@@ -5,9 +5,17 @@
 :endblock
 
 :block main
-
-   <h4>Redireccionado en <b id="counter"></b> segundos.</h4>
-
+   <style type="text/css">
+      .bitphp-error-main {
+         background-color: #222334;
+      }
+   </style>
+   <div class="header alt vert">
+      <div class="container">
+         <h1>Oops! please wait...</h1>
+         <p class="lead">You will be redirected in <b id="counter"></b> seconds</p>
+      </div>      
+   </div>
    <script type="text/javascript">
 
    var url = "{{ $url }}";

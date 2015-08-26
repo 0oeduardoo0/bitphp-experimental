@@ -4,39 +4,17 @@
    <title>Bitphp | Yeah!</title>
    <meta charset="utf8">
    :css bootstrap
-   <style type="text/css">
-      .jumbotron {
-         color: #fff;
-         background-color: #556370;
-      }
-
-      .green {
-         color: #C7F465;
-      }
-
-      .red {
-         color: #FF6B6B;
-      }
-
-      a:hover {
-         color: #FF6B6B;
-      }
-
-      .sticker {
-         max-width: 100px;
-      }
-   </style>
+   :css bitphp.bootstrap.theme
 </head>
 <body>
-   <div class="jumbotron">
+   <div class="header alt vert">
       <div class="container">
-         <div class="row" align="center">
-            <img src="{{ :base }}/public/img/unicorn.png" class="sticker">
-         </div>
+         <h1>Bitphp</h1>
+         <p class="lead">framework for dummies</p>
       </div>
    </div>
-   <div class="container">
-      <div class="row">
+   <div class="featurette">
+      <div class="container">
          <h1>Bitphp Framework</h1>
          <h3>
             <span class="red">#</span> &nbsp;
@@ -48,7 +26,7 @@
          </h3>
          <h3>
             <span class="red">#</span> &nbsp;
-            Join to the <a class="red" href="https://www.facebook.com/groups/bit.framework/" target="__blank">community</a>
+            Join to the <a class="red" href="https://www.facebook.com/groups/bit.framework/" target="__blank">community</a>!
          </h3>
          <h3>
             <span class="red">#</span> &nbsp;

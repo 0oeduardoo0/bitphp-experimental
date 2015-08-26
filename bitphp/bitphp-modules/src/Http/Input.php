@@ -11,6 +11,9 @@
    */
   class Input {
 
+    private static $standard = null;
+    private static $headers = null;
+
     /**
      *   Filtra el indice del metodo HTTP indicado
      *
@@ -54,7 +57,7 @@
      *   @param bool $filter Activa/desactiva el filtro, true por defecto
      *   @return string Valor leido o null si no existe
      */
-    public static function post($index, $filter = true) {
+    public static function post($index, $filter=true) {
       return self::filter($index, INPUT_POST, $filter);
     }
 
@@ -65,7 +68,7 @@
      *  @param bool $filter Indica si se debe aplicar o no un filtro, por defecto en true
      *  @return string Valor leido o null si el indice no existe
      */
-    public static function get($index, $filter = true) {
+    public static function get($index, $filter=true) {
       return self::filter($index, INPUT_GET, $filter);
     }
 
@@ -76,23 +79,45 @@
      *  @param bool $filter Indica si se debe aplicar o no un filtro, por defecto en true
      *  @return string Valor leido o null si el indice no existe
      */
-    public static function cookie($index, $filter = true) {
+    public static function cookie($index, $filter=true) {
       return self::filter($index, INPUT_COOKIE, $filter);
     }
 
     /**
      *  Entrada estandar
      */
-    public static function standard($index, $filter = true) {
-      $input = file_get_contents('php://input');
-      parse_str($input, $array);
+    public static function standard($index, $filter=true) {
+      if(null === self::$standard) {
+        $input = file_get_contents('php://input');
+        parse_str($input, self::$standard);
+      }
 
-      if(!isset($array[$index]))
+      if(!isset(self::$standard[$index]))
         return null;
 
       if(!$filter)
-        return $array[$index];
+        return self::$standard[$index];
 
-      return filter_var($array[$index], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      return filter_var(self::$standard[$index], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    }
+
+    /**
+     *  Lectura de cabeceras http
+     */
+    public static function headers($index, $filter=true) {
+      if(null === self::$headers) {
+        self::$headers = getallheaders();
+      }
+
+      //normalize
+      $index = ucwords(strtolower($index),'-');
+
+      if(!isset(self::$headers[$index]))
+        return null;
+
+      if(!$filter)
+        return self::$headers[$index];
+
+      return filter_var(self::$headers[$index], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
   }
