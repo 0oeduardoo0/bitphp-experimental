@@ -30,7 +30,7 @@
    <div class="gallery">
       <div class="row">
          <div class="col-md-6 col-md-offset-3 text-center">
-            <h2>Variables de entorno</h2>
+            <h2 class="white">Variables de entorno</h2>
             <br>
          </div>
       </div>
@@ -114,83 +114,89 @@
             <h3>Traza inversa</h3>
          </div>
          <div class="row">
-            <table class="table table-hover">
-               <thead>
-                  <tr>
-                     <th>Hop</th>
-                     <th>Archivo</th>
-                     <th>Linea</th>
-                     <th>Clase y/o objeto</th>
-                     <th>Argumentos</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  :var hopCounter 0
-                  <?php array_shift($errors[0]['trace']) ?>
-                  :foreach $errors[0]['trace'] as $hop
+            <div class="table-responsive">
+               <table class="table table-hover">
+                  <thead>
                      <tr>
-                        <th>{{ $hopCounter }}</th>
-                        <td>
-                           :if preg_match('/(.*)\/bitphp\/(.*)/', $hop.file)
-                              {{ $hop.file }}
-                           :else
-                              <strong>{{ $hop.file }}</strong>
-                           :endif
-                        </td>
-                        <td>{{ $hop.line }}</td>
-                        <td>{{ $hop.class . $hop.type . $hop.function }}</td>
-                        <td>
-                           {{ filter_var(var_export($hop.args, true), FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}
-                        </td>
+                        <th>Hop</th>
+                        <th>Archivo</th>
+                        <th>Linea</th>
+                        <th>Clase y/o objeto</th>
+                        <th>Argumentos</th>
                      </tr>
-                     <?php $hopCounter++ ?>
-                  :endforeach
-               </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                     :var hopCounter 0
+                     <?php array_shift($errors[0]['trace']) ?>
+                     :foreach $errors[0]['trace'] as $hop
+                        <tr>
+                           <th>{{ $hopCounter }}</th>
+                           <td>
+                              :if preg_match('/(.*)\/bitphp\/(.*)/', $hop.file)
+                                 {{ $hop.file }}
+                              :else
+                                 <strong>{{ $hop.file }}</strong>
+                              :endif
+                           </td>
+                           <td>{{ $hop.line }}</td>
+                           <td>{{ $hop.class . $hop.type . $hop.function }}</td>
+                           <td>
+                              {{ filter_var(var_export($hop.args, true), FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}
+                           </td>
+                        </tr>
+                        <?php $hopCounter++ ?>
+                     :endforeach
+                  </tbody>
+               </table>
+            </div>
          </div>
          <div class="row">
             <h3>Cabeceras HTTP</h3>
          </div>
          <div class="row">
-            <table class="table table-hover">
-               <thead>
-                  <tr>
-                     <th>Nombre</th>
-                     <th>Valor</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  :foreach getallheaders() as $name => $value
+            <div class="table-responsive">
+               <table class="table table-hover">
+                  <thead>
                      <tr>
-                        <th>{{ filter_var($name, FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}</th>
-                        <td>{{ filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}</td>
+                        <th>Nombre</th>
+                        <th>Valor</th>
                      </tr>
-                  :endforeach
-               </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                     :foreach getallheaders() as $name => $value
+                        <tr>
+                           <th>{{ filter_var($name, FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}</th>
+                           <td>{{ filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}</td>
+                        </tr>
+                     :endforeach
+                  </tbody>
+               </table>
+            </div>
          </div>
          <div class="row">
             <h3>Configuración (config.json)</h3>
          </div>
          <div class="row">
-            <table class="table table-hover">
-               <thead>
-                  <tr>
-                     <th>Parametro</th>
-                     <th>Valor</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  :foreach \Bitphp\Core\Config::all() as $param => $value
+            <div class="table-responsive">
+               <table class="table table-hover">
+                  <thead>
                      <tr>
-                        <th>{{ $param }}</th>
-                        <td>
-                           <pre><?php var_dump($value) ?></pre>
-                        </td>
+                        <th>Parametro</th>
+                        <th>Valor</th>
                      </tr>
-                  :endforeach
-               </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                     :foreach \Bitphp\Core\Config::all() as $param => $value
+                        <tr>
+                           <th>{{ $param }}</th>
+                           <td>
+                              <pre><?php var_dump($value) ?></pre>
+                           </td>
+                        </tr>
+                     :endforeach
+                  </tbody>
+               </table>
+            </div>
          </div>
       </div>
    </div>

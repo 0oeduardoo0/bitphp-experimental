@@ -15,7 +15,7 @@
    </div>
    <div class="featurette">
       <div class="container">
-         <h1>Bitphp Framework</h1>
+         <h1>Fuck Yeah!</h1>
          <h3>
             <span class="red">#</span> &nbsp;
             Bitphp is running in this magical land, with unicorns and rainbows!

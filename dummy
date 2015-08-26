@@ -264,8 +264,7 @@ $cli->doCommand('default', function() {
       return;
    }
 
-   $command = Arguments::get(0);
-   StandardIO::output("   [back_red]Comando $command invalido");
+   StandardIO::output("   [back_red]Comando invalido");
    StandardIO::output("   [back_white]dummy --help para ver ayuda");
 });
 

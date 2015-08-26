@@ -5,12 +5,7 @@
 :endblock
 
 :block main
-   <style type="text/css">
-      .bitphp-error-main {
-         background-color: #222334;
-      }
-   </style>
-   <div class="header alt vert">
+   <div class="header large-header alt vert">
       <div class="container">
          <h1>Oops! please wait...</h1>
          <p class="lead">You will be redirected in <b id="counter"></b> seconds</p>

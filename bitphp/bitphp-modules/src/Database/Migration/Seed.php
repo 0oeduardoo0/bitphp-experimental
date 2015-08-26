@@ -53,22 +53,27 @@
 
       protected function field($data) {
         $this->fields[] = "  $data";
+        return $this;
       }
 
       protected function primaryKey($field) {
         $this->primary_keys[] = "  PRIMARY KEY ($field)";
+        return $this;
       }
 
       protected function foreignKey($data) {
         $this->foreign_keys[] = "  FOREIGN KEY $data";
+        return $this;
       }
 
       protected function key($data) {
         $this->keys[] = "  KEY $data";
+        return $this;
       }
 
       protected function index($data) {
         $this->indexes[] = "  INDEX $data";
+        return $this;
       }
 
       public function createDatabaseQuery($name) {

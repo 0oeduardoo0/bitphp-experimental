@@ -78,12 +78,12 @@
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
       public function update($params, $property = 'id') {
-         $values = array();
+         $values = '';
          foreach ($params as $key => $value) {
-            $values[] = "$key='$value'";
+            $values .= "$key='$value',";
          }
 
-         $values = implode(',', $values);
+         $values = trim($values, ',');
 
          if(!isset($this->$property)) {
             trigger_error("No se pudo actualizar, '$property' no es un campo");
@@ -109,16 +109,16 @@
        * @return bool True, si la consulta fue exitosa, false de lo contrario
        */
       public function create(array $params) {
-         $keys = array();
-         $values = array();
+         $keys = '';
+         $values = '';
 
          foreach ($params as $key => $value) {
-            $keys[] = $key;
-            $values[] = "'$value'";
+            $keys = "$key,";
+            $values = "'$value',";
          }
 
-         $keys = implode(',', $keys);
-         $values = implode(',', $values);
+         $keys = trim($keys, ',');
+         $values = trim($values, ',');
 
          $query = "INSERT INTO $this->table ($keys) VALUES ($values)";
          $this->database->execute($query);

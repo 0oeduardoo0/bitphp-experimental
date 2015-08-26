@@ -8,6 +8,7 @@ body {
   height: 100%;
   width: 100%;
   font-family:Arial,sans-serif;
+  background-color: #222334;
 }
 
 /* fix bs3 horizontal scrollbar bug */
@@ -106,8 +107,12 @@ img.grayscale {
 }
 
 .header {
-  height: 80%;
+  height: auto;
   background: #f68076 url('http://www.bootply.com/assets/example/pt_topo_l.png') repeat center center fixed;
+}
+
+.large-header {
+  height: 80%;
 }
 
 /* use alt in navbar and header for different color */
@@ -206,6 +211,10 @@ footer {
 
 .red {
   color: #FF6B6B;
+}
+
+.white {
+  color: #fff;
 }
 
 a:hover {

@@ -20,3 +20,10 @@
  [bold_green]Cache management
    [bold_white]php dummy cache            [white]- Indica cuantos  archivos hay en cache
    [bold_white]php dummy cache --dump, -d [white]- Limpia el cache
+
+ [bold_green]Database management
+   [bold_white]php dummy migrations up all/all     [white]- Ejecuta las migraciones disponibles
+   [bold_white]php dummy migrations down all/all   [white]- Deshace todas las migraciones
+   [bold_white]php dummy migrations up db/table    [white]- Ejecuta las migraciones indicadas
+   [bold_white]php dummy migrations down db/table  [white]- Deshace las migraciones indicadas
+   

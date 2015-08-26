@@ -8,7 +8,6 @@ require 'bitphp/autoload.php';
 
 use \Bitphp\Base\MicroServer;
 use \Bitphp\Modules\Layout\Medusa;
-use \Bitphp\Modules\Http\Input;
 
 $server = new MicroServer();
 
