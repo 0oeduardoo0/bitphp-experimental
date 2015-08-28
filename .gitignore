@@ -1,3 +1,6 @@
 olimpus/bitphp-trash/
 olimpus/cache/
 olimpus/log/
+app/
+config/
+index.php

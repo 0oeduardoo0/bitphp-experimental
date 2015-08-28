@@ -170,7 +170,7 @@
          $files = array();
          $base = Globals::get('base_path');
 
-         Config::load($base . '/app/config.json');
+         Config::load('app');
 
          $dirs  = [
               $base . '/app'

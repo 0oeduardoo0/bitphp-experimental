@@ -8,6 +8,8 @@ require 'bitphp/autoload.php';
    
 use \Bitphp\Core\Trash;
 use \Bitphp\Core\Globals;
+use \Bitphp\Core\Config;
+use \Bitphp\Core\Environment;
 use \Bitphp\Core\ErrorLogManager as Error;
 use \Bitphp\Base\CommandLine;
 use \Bitphp\Modules\Cli\Arguments;
@@ -18,6 +20,35 @@ use \Bitphp\Modules\Utilities\Random;
 use \Bitphp\Modules\Database\Migration;
 
 $cli = new CommandLine();
+
+/**
+ * Environment command
+ *
+ * Show and switch bettween the available develop environments
+ */
+$cli->doCommand('dummy environment', function(){
+   $environment = Environment::info();
+
+   $current_environment = $environment['current'];
+
+   $flag = Arguments::flag('switch');
+   if(false !== $flag) {
+      $switched = Environment::doSwitch(Arguments::get($flag));
+      if($switched === false) {
+         StandardIO::output(' [bold_red]~ No hay entornos disponibles para alternar o no se tiene permisos para hacerlo');
+         return;
+      }
+
+      StandardIO::output(" ~ Cambiando entorno de $current_environment a $switched...");
+      return;
+   }
+
+   StandardIO::output(' ~ Trabajando en entorno [bold_green]' . $environment['current']);
+   StandardIO::output(' ~ Entornos disponibles: ');
+   foreach ($environment['available'] as $env) {
+      StandardIO::output('      - ' . $env);
+   }
+});
 
 /**
  * Migrations command

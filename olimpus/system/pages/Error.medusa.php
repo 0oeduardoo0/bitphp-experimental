@@ -12,7 +12,7 @@
          <h1>Ocurrieron {{ $nerrors }} errores!</h1>
          /* for check if error log have permissions */
          :if !$errors[0]['identifier']
-            <h4>No se pudieron registrar los errores, verifica qué el servidor tenga permisos de escritura en la carpeta <b>{{ $_ROUTE['base_path'] }}/olimpus</b></h4>
+            <h4>No se pudieron registrar los errores, verifica qué el servidor tenga permisos de escritura en la carpeta <b>{{ $_ROUTE['base_path'] }}/olimpus</b> o revisa la configuración.</h4>
          :endif
          <br>
          :foreach $errors as $error
@@ -21,7 +21,10 @@
                {{ $error.message }} - <i>{{ $error.file }} linea {{ $error.line }}</i>
             </h4>
             :if $error.identifier
-               <div class="alert alert-bitphp"> $ php dummy error --id {{ $error.identifier }}</div>
+               <div class="alert alert-bitphp">
+                  <span class="glyphicon glyphicon-console pull-right"></span>
+                  $ php dummy error --id {{ $error.identifier }}
+               </div>
             :endif
          :endforeach
          <br>
@@ -38,6 +41,11 @@
          <div class="row">
             <div class="col-sm-4">
                <div class="list-group">
+                  <a href="#" class="list-group-item">
+                     <span class="glyphicon glyphicon-leaf"></span>
+                     <b>Environment</b> <br> {{ \Bitphp\Core\Environment::info()['current'] }}
+                  </a>
+                  <br>
                   <a href="#" class="list-group-item">
                      <span class="glyphicon glyphicon-folder-open"></span>
                      <b>Base path</b> <br> {{ $_ROUTE['base_path'] }}
@@ -80,7 +88,7 @@
                <div class="list-group">
                   <a href="#" class="list-group-item">
                      <span class="glyphicon glyphicon-paperclip"></span>
-                     <b>Parametros de la URI</b> 
+                     <b>URI Params</b> 
                      <br>
                      :foreach $_ROUTE['uri_params'] as $param
                         {{ $param }}<br>
@@ -174,7 +182,7 @@
             </div>
          </div>
          <div class="row">
-            <h3>Configuración (config.json)</h3>
+            <h3>Configuración cargada</h3>
          </div>
          <div class="row">
             <div class="table-responsive">

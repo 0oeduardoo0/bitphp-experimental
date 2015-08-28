@@ -9,7 +9,7 @@
    class Migration {
 
       protected function upOrDown($subject, $action) {
-         Config::load(Globals::get('base_path') . '/app/config.json');
+         Config::load('migrations', true, false);
 
          $result = array(
               'tables' => array()

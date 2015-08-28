@@ -2,6 +2,9 @@
 
    namespace Bitphp\Core;
 
+   use \Bitphp\Core\Globals;
+   use \Bitphp\Core\Environment;
+
    /**
     *   Proporciona los metodos para leer el archivo de configuracion de
     *   la aplicacion
@@ -10,6 +13,7 @@
     */
    class Config {
 
+      protected static $source;
       protected static $params = array();
 
       /**
@@ -17,16 +21,39 @@
        *   de configuracion de la aplicacion
        *
        *   @param string $file Ruta al archivo de configuracion
+       *   @param bool $merge indica si se debe mezclar los parametros para cuando se cargan varios archivos
+       *   @param bool $environment indica si se debe tomar en cuenta el ambiente de desarrollo
+       *   @return void
        */
-      public static function load($file) {
+      public static function load($file, $merge=false, $environment=true) {
+
+         $mime = 'json';
+
+         if($environment) {
+            $environment = Environment::info()['current'];
+            $mime = "$environment.$mime";
+         }
+
+
+         $file = Globals::get('base_path') . "/config/$file.$mime";
 
          if( file_exists($file) ) {
             $content = file_get_contents($file);
             #usa la variable global para no cargar el archivo una y otra vez
             $params = json_decode($content, true);
-            foreach ($params as $param => $value) {
-              self::$params[$param] = $value;
+
+            if(self::$source && $merge) {
+              self::$source = 'mixed';
+
+              foreach ($params as $param => $value) {
+                self::$params[$param] = $value;
+              }
+
+              return;
             }
+
+            self::$source = $file;
+            self::$params = $params;
          }
       }
 
@@ -59,5 +86,18 @@
        */
       public static function all() {
          return self::$params;
+      }
+
+      /**
+       *  Guarda la configuracion actual en el archivo donde fue cargada
+       *  solo si no fue cargada de varios archivos
+       */
+      public static function save() {
+        if(self::$source != 'mixed') {
+          $content = json_encode(self::$params, JSON_PRETTY_PRINT);
+          return @file_put_contents(self::$source, $content);
+        }
+
+        return false;
       }
    }

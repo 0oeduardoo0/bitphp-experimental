@@ -33,7 +33,7 @@
             , 'app_path' => realpath('') . '/app'
          ]);
 
-         Config::load(Globals::get('app_path') . '/config.json');
+         Config::load('app');
          $errorHandler = new Error();
          $errorHandler->registre();
       }
