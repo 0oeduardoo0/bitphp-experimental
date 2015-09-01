@@ -135,21 +135,38 @@
                   </thead>
                   <tbody>
                      :var hopCounter 0
-                     <?php array_shift($errors[0]['trace']) ?>
                      :foreach $errors[0]['trace'] as $hop
                         <tr>
                            <th>{{ $hopCounter }}</th>
                            <td>
-                              :if preg_match('/(.*)\/bitphp\/(.*)/', $hop.file)
-                                 {{ $hop.file }}
-                              :else
-                                 <strong>{{ $hop.file }}</strong>
+                              :if !empty($hop.file)
+                                 :if preg_match('/(.*)\/bitphp\/(.*)/', $hop.file)
+                                    {{ $hop.file }}
+                                 :else
+                                    <strong>{{ $hop.file }}</strong>
+                                 :endif
                               :endif
                            </td>
-                           <td>{{ $hop.line }}</td>
-                           <td>{{ $hop.class . $hop.type . $hop.function }}</td>
                            <td>
-                              {{ filter_var(var_export($hop.args, true), FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}
+                              :if !empty($hop.line)
+                                 {{ $hop.line }}
+                              :endif
+                           </td>
+                           <td>
+                              :if !empty($hop.class)
+                                 {{ $hop.class }}
+                              :endif
+                              :if !empty($hop.type)
+                                 {{ $hop.type }}
+                              :endif
+                              :if !empty($hop.function)
+                                 {{ $hop.function }}
+                              :endif
+                           </td>
+                           <td>
+                              :if !empty($hop.args)
+                                 {{ filter_var(var_export($hop.args, true), FILTER_SANITIZE_FULL_SPECIAL_CHARS) }}
+                              :endif
                            </td>
                         </tr>
                         <?php $hopCounter++ ?>

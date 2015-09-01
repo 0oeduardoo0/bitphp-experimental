@@ -5,8 +5,8 @@
    use \Exception;
    use \Bitphp\Core\Globals;
    use \Bitphp\Core\Config;
+   use \Bitphp\Core\Log;
    use \Bitphp\Modules\Layout\Medusa;
-   use \Bitphp\Modules\Utilities\File;
 
    /**
     *   Clase para registrar los error_handlers de bitphp
@@ -25,64 +25,55 @@
       private $file;
       private $medusa;
 
+      private function encode($code, $message, $file, $line, $trace=null) {
+        if(null === $trace) {
+          $exception = new Exception();
+          $trace = $exception->getTrace();
+        }
+        
+        $context = [
+            'code' => $code
+          , 'message' => $message
+          , 'file' => $file
+          , 'line' => $line
+          , 'trace' => $trace
+          , 'request_uri' => Globals::get('base_url') . '/' . Globals::get('request_uri')
+        ];
+
+        $context['identifier'] = $this->log->error($message, $context);
+        $this->errors[] = $context;
+      }
+
       /**
        *  Registra las funciones para el manejo de errores
        *
        */
       public function registre() {
-          ini_set('display_errors', 0);
+          #ini_set('display_errors', 0);
           error_reporting(E_ALL);
           
           set_error_handler(array($this, 'globalErrorHandler'));
           register_shutdown_function(array($this, 'fatalErrorHandler'));
+          set_exception_handler(array($this, 'exceptionHandler'));
 
           $this->errors = array();
-          $this->file = new File();
+          $this->log = new Log();
           $this->medusa = new Medusa();
           $this->medusa->views_path = Globals::get('base_path') . '/olimpus/system/pages';
       }
-      
+
       /**
-       *   Añade un registro de error al archivo de errores
-       *   en formato JSON, retorna id del error si el registro
-       *   fue satisfactorioo false si este falló
+       *  Gestion de Excepciones no controladas
        *
-       *   @param int $code indica el codigo de error
-       *   @param string $message mensaje de error
-       *   @param string $file archivo donde se produjo el error
-       *   @param int $line linea donde se produjo el error
-       *   @param array $trace trasa de pila
-       *   @return mixed false si no se pudo guardar el error, un string
-       *                  con el identificador del error si este se guardo
        */
-      private function log($code, $message, $file, $line, $trace) {
-         $save_log = Config::param('errors.log');
-         if(false === $save_log)
-          return false;
-
-         # id es un hash md5 formado por la fecha y un numero aleatorio
-         $date = date(DATE_ISO8601);
-         $identifier  = md5($date . rand(0, 9999));
-         $request_uri = Globals::get('base_url') . '/' . Globals::get('request_uri');
-
-         $log = [
-              'date' => $date
-            , 'message' => $message
-            , 'id' => $identifier
-            , 'trace' => $trace
-            , 'code' => $code
-            , 'file' => $file
-            , 'line' => $line
-            , 'request_uri' => $request_uri
-         ];
-
-         $log = json_encode($log) . PHP_EOL;
-
-         $log_file = Globals::get('base_path') . '/olimpus/log/errors.log';
-         if(false === $this->file->append($log_file, $log))
-          return false;
-
-         return $identifier;
+      public function exceptionHandler(Exception $exception) {
+        $this->encode(
+            $exception->getCode()
+          , 'Excepción no controlada #' . $exception->getCode() . ' \'' . $exception->getMessage()
+          , $exception->getFile()
+          , $exception->getLine()
+          , $exception->getTrace()
+        );
       }
 
       /**
@@ -95,22 +86,11 @@
        *   @return void
        */
       public function globalErrorHandler($code, $message, $file, $line) {
-         $exception = new Exception();
-         $trace = $exception->getTrace();
-
-         $identifier = $this->log($code, $message, $file, $line, $trace);
-         $this->errors[] = [
-              'code' => $code
-            , 'message' => $message
-            , 'file' => $file
-            , 'line' => $line
-            , 'identifier' => $identifier
-            , 'trace' => $trace
-         ];
+         $this->encode($code, $message, $file, $line);
       }
 
       /**
-       *   Se ejecuta cuando el script finaliza y verifica si hubo errores
+       *   Se ejecuta cuando el script finaliza y verifica si hubo errores fatales
        *   en caso de ser así carga la vista de error de bitphp
        *
        *   @return void
@@ -118,14 +98,8 @@
       public function fatalErrorHandler() {      
          $error = error_get_last();
          
-         if(null !== $error) {
-             $this->globalErrorHandler(
-                  E_ERROR
-                , $error['message']
-                , $error['file']
-                , $error['line']
-             );
-         }
+         if(null !== $error)
+             $this->encode(E_ERROR, $error['message'], $error['file'], $error['line']);
 
          if (!empty($this->errors)) {
             $display = Config::param('errors.debug');

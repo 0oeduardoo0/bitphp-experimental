@@ -10,7 +10,7 @@ use \Bitphp\Core\Trash;
 use \Bitphp\Core\Globals;
 use \Bitphp\Core\Config;
 use \Bitphp\Core\Environment;
-use \Bitphp\Core\ErrorLogManager as Error;
+use \Bitphp\Core\LogManager;
 use \Bitphp\Base\CommandLine;
 use \Bitphp\Modules\Cli\Arguments;
 use \Bitphp\Modules\Cli\StandardIO;
@@ -135,15 +135,52 @@ $cli->doCommand('dummy cache', function(){
 $cli->doCommand('dummy error', function() {
    $flag = Arguments::flag('id');
    if($flag !== false) {
-      $error = Arguments::get($flag);
-      $info  = Error::search($error);
+      $error_id = Arguments::get($flag);
+      $error  = LogManager::search($error_id);
+
+      if(false === $error) {
+         StandardIO::output("[bold_red]   Registro $error_id no encontrado...");
+         return;
+      }
+
+      $info = "\n";
+
+      $date = TimeDiff::getTimeAgo($error['date']);
+      $message = $error['message'];
+      $file = $error['context']['file'];
+      $line = $error['context']['line'];
+      $url  = $error['context']['request_uri'];
+
+      $info .= "[bold_white] ~ Se produjo hace $date\n";
+      $info .= "[bold_white]   Error [bold_blue]$error_id\n";
+      $info .= "[bold_white]   Lanzado desde [bold_blue]$file ";
+      $info .= "[bold_white]en la linea [bold_blue]$line\n";
+      $info .= "[bold_white]   Url [bold_blue]$url\n\n";
+      $info .= "[bold_red] ~ $message\n";
+
+      if(!empty($error['context']['trace'])) {
+
+         $info .= "\n[bold_white] ~ Stacktrace\n";
+
+         foreach ($error['context']['trace'] as $trace) { 
+
+            if(!empty($trace['file'])) {
+               $file = $trace['file'];
+               $line = $trace['line'];
+
+               $info .= "[bold_white]   Dentro de [bold_blue]$file ";
+               $info .= "[bold_white]en la linea [bold_blue]$line\n";
+            }
+         }
+      }
+
       StandardIO::output($info);
       return;         
    }
 
    $flag = Arguments::flag('dump');
    if($flag !== false) {
-      $removed = Error::dump();
+      $removed = LogManager::dump();
 
       if($removed === false) {
          StandardIO::output("   [back_red]permiso denegado");
@@ -154,7 +191,26 @@ $cli->doCommand('dummy error', function() {
       return;
    }
 
-   $list = Error::generateList();
+   $errors  = LogManager::getArrayLog();
+   $list = " ~ Registro de errores\n";
+
+   $counter = 0;
+   foreach ($errors as $error) {
+      $error = json_decode($error, true);
+
+      if(empty($error))
+         continue;
+
+      $id   = $error['id'];
+      $date = TimeDiff::getTimeAgo($error['date']);
+      $message = substr($error['message'], 0, 60);
+
+      $list .= "[bold_white]   ($id) - Hace $date\n   [bold_red]$message...\n";
+      $counter++;
+   }
+
+   $list .= "   [back_white] $counter Errores en total ";
+
    StandardIO::output($list);
 });
 
