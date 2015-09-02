@@ -3,6 +3,13 @@
 /* move special fonts to HTML head for better performance */
 @import url(http://fonts.googleapis.com/css?family=Voltaire);
 
+@font-face {
+  font-family: 'bitphp';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/bitphp.ttf);
+}
+
 html,
 body {
   height: 100%;
@@ -232,6 +239,15 @@ pre {
 
 strong {
   color: #A52A2A;
+}
+
+.icon-bitphp-logo {
+  font-family: 'bitphp';
+  font-size: inherit;
+}
+
+.icon-bitphp-logo:before {
+    content: "\e600";
 }
 
 /* -- end custom css for Bootstrap 3.x --*/

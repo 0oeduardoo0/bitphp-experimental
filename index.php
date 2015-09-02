@@ -12,7 +12,7 @@ use \Bitphp\Modules\Layout\Medusa;
 $server = new MicroServer();
 
 $server->doGet('/', function() {
-   Medusa::quick('welcomes');
+   Medusa::quick('welcome');
 });
 
 $server->run();

@@ -9,7 +9,7 @@
 <body>
    <div class="header alt vert">
       <div class="container">
-         <h1>Bitphp</h1>
+         <h1><span class="icon-bitphp-logo"></span> Bitphp</h1>
          <p class="lead">framework for dummies</p>
       </div>
    </div>
