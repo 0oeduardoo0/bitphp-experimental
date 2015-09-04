@@ -5,6 +5,7 @@
    class Arguments {
 
       public static function command() {
+         array_shift($_SERVER['argv']);
          return implode(' ', $_SERVER['argv']);
       }
 

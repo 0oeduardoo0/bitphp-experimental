@@ -11,7 +11,7 @@ use \Bitphp\Core\Globals;
 use \Bitphp\Core\Config;
 use \Bitphp\Core\Environment;
 use \Bitphp\Core\LogManager;
-use \Bitphp\Base\CommandLine;
+use \Bitphp\Base\CliApplication;
 use \Bitphp\Modules\Cli\Arguments;
 use \Bitphp\Modules\Cli\StandardIO;
 use \Bitphp\Modules\Utilities\TimeDiff;
@@ -19,14 +19,14 @@ use \Bitphp\Modules\Utilities\File;
 use \Bitphp\Modules\Utilities\Random;
 use \Bitphp\Modules\Database\Migration;
 
-$cli = new CommandLine();
+$cli = new CliApplication();
 
 /**
  * Environment command
  *
  * Show and switch bettween the available develop environments
  */
-$cli->doCommand('dummy environment', function(){
+$cli->doCommand('environment', function(){
    $environment = Environment::info();
 
    $current_environment = $environment['current'];
@@ -57,7 +57,7 @@ $cli->doCommand('dummy environment', function(){
  * make seeds, for up or down the user for db connection in config.json need 
  * privileges
  */
-$cli->doCommand('dummy migrations ($action) ($subject)', function($action, $subject) {
+$cli->doCommand('migrations ($action) ($subject)', function($action, $subject) {
    switch ($action) {
 
       //action to up migrations using the diaposable seeds
@@ -106,7 +106,7 @@ $cli->doCommand('dummy migrations ($action) ($subject)', function($action, $subj
  * if no any flag is passed this command count the files in cache , if flag --dump 
  * is passed, then the cache will be erased.
  */
-$cli->doCommand('dummy cache', function(){
+$cli->doCommand('cache', function(){
    $cached = File::explore(Globals::get('base_path') . '/olimpus/cache');
    array_shift($cached);
 
@@ -132,7 +132,7 @@ $cli->doCommand('dummy cache', function(){
  *
  * This command uses ErrorLogManager class for list, erase, or view some error.
  */
-$cli->doCommand('dummy error', function() {
+$cli->doCommand('error', function() {
    $flag = Arguments::flag('id');
    if($flag !== false) {
       $error_id = Arguments::get($flag);
@@ -219,7 +219,7 @@ $cli->doCommand('dummy error', function() {
  *
  * this command uses the Trash manager class
  */
-$cli->doCommand('dummy trash', function(){
+$cli->doCommand('trash', function(){
    $flag = Arguments::flag('remove-app');
    if($flag !== false) {
       StandardIO::output(' ~ Analizando...');
@@ -352,7 +352,7 @@ $cli->doCommand('default', function() {
    }
 
    StandardIO::output("   [back_red]Comando invalido");
-   StandardIO::output("   [back_white]dummy --help para ver ayuda");
+   StandardIO::output("   [back_white]--help para ver ayuda");
 });
 
 $cli->run();

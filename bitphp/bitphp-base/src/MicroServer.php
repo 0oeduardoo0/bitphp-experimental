@@ -4,8 +4,8 @@
 
    use \Closure;
    use \Exception;
-   use \Bitphp\Base\Server;
    use \Bitphp\Core\Globals;
+   use \Bitphp\Base\Abstracts\Server;
    use \Bitphp\Base\MicroServer\Route;
    use \Bitphp\Base\MicroServer\Pattern;
    use \Bitphp\Exceptions\HttpMethodException;

@@ -1,7 +1,12 @@
 /* -- custom css for Bootstrap 3.x --*/
 
 /* move special fonts to HTML head for better performance */
-@import url(http://fonts.googleapis.com/css?family=Voltaire);
+@font-face {
+  font-family: 'Voltaire';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/voltaire.woff2);
+}
 
 @font-face {
   font-family: 'bitphp';

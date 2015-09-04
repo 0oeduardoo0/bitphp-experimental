@@ -1,6 +1,6 @@
 <?php 
 
-   namespace Bitphp\Base;
+   namespace Bitphp\Base\Abstracts;
 
    use \Bitphp\Core\Error;
    use \Bitphp\Core\Config;

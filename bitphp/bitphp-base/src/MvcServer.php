@@ -3,8 +3,8 @@
    namespace Bitphp\Base;
 
    use \Bitphp\Core\Globals;
-   use \Bitphp\Base\Server;
    use \Bitphp\Base\MvcServer\Route;
+   use \Bitphp\Base\Abstracts\Server;
 
    /**
     *   Implementacion del servidor base para crear 

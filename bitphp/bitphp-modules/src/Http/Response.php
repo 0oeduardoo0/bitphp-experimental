@@ -71,4 +71,12 @@
 
       header("Location: $url");
     }
+
+    public static function notFound() {
+      self::status(404);
+      $medusa = new Medusa();
+      $medusa->views_path = Globals::get('base_path') . '/olimpus/system/pages';
+      $medusa->load('NotFound')
+              ->draw();
+    }
   }

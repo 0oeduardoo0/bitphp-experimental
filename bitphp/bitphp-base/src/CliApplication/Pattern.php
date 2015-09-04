@@ -1,6 +1,6 @@
 <?php
    
-   namespace Bitphp\Base\CommandLine;
+   namespace Bitphp\Base\CliApplication;
 
    /**
     * Convierte las uri's de las rutas de comandos

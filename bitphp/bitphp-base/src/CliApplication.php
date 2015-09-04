@@ -2,9 +2,9 @@
 
    namespace Bitphp\Base;
 
-   use \Bitphp\Core\Globals;
    use \Bitphp\Modules\Cli\Arguments;
-   use \Bitphp\Base\CommandLine\Pattern;
+   use \Bitphp\Base\Abstracts\CliService;
+   use \Bitphp\Base\CliApplication\Pattern;
 
    /**
     *   Clase que proporcina las bases para la creacion
@@ -14,7 +14,7 @@
     *
     *   @author Eduardo B <eduardo@root404.com>
     */
-   class CommandLine {
+   class CliApplication extends CliService {
 
       /** Comandos registrados */
       protected $commands;
@@ -26,7 +26,8 @@
        *   en las variables globales de bitphp
        */
       public function __construct() {
-         Globals::registre('base_path', realpath(''));
+         parent::__construct();
+
          $this->commands = array();
          $this->binded = array();
       }
@@ -44,19 +45,6 @@
          }
 
          throw new Exception('La clase ' . __CLASS__ . " no contiene el metodo $method", 1);
-      }
-
-      /**
-       *   Verifica si la aplicacion esta corriendo 
-       *   en un servidor web
-       *
-       *   @return bool
-       */
-      private function runnigInWebServer() {
-         if( !empty($_SERVER['SERVER_NAME']) )
-            return true;
-
-         return false;
       }
 
       /**
@@ -103,9 +91,6 @@
        *   @return bool
        */
       public function run() {
-         if($this->runnigInWebServer())
-            return false;
-
          $executed = Arguments::command();
 
          foreach ($this->commands as $command => $callback) {
