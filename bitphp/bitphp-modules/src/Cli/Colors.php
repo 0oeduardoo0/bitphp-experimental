@@ -26,8 +26,7 @@
          , 'reset' => '[0m'
       ];
 
-      //\033[1;31mbold red text\033[0m\n
-      public static function paint( $string ) {
+      public static function paint($string) {
          $sistem = substr(PHP_OS, 0, 3);
          $sistem = strtoupper( $sistem );
 

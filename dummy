@@ -143,24 +143,38 @@ $cli->doCommand('error', function() {
          return;
       }
 
-      $info = "\n";
-
       $date = TimeDiff::getTimeAgo($error['date']);
       $message = $error['message'];
-      $file = $error['context']['file'];
-      $line = $error['context']['line'];
-      $url  = $error['context']['request_uri'];
+      
+      StandardIO::output("\n ~ Hace $date");
+      StandardIO::output(" ~ $message", $error['level']);
 
-      $info .= "[bold_white] ~ Se produjo hace $date\n";
-      $info .= "[bold_white]   Error [bold_blue]$error_id\n";
-      $info .= "[bold_white]   Lanzado desde [bold_blue]$file ";
-      $info .= "[bold_white]en la linea [bold_blue]$line\n";
-      $info .= "[bold_white]   Url [bold_blue]$url\n\n";
-      $info .= "[bold_red] ~ $message\n";
+      $info = '';
+
+      if(
+            !empty($error['context']['file']) 
+         && !empty($error['context']['line'])
+         && !empty($error['context']['request_uri'])
+        ) 
+      {
+         $file = $error['context']['file'];
+         $line = $error['context']['line'];
+         $url  = $error['context']['request_uri'];
+
+         unset(
+              $error['context']['file']
+            , $error['context']['line']
+            , $error['context']['request_uri']
+         );
+
+         $info .= "\n ~ Desde [bold_blue]$file ";
+         $info .= "[bold_white]en la linea [bold_blue]$line\n";
+         $info .= "[bold_white] ~ Url [bold_blue]$url\n\n";
+      }
 
       if(!empty($error['context']['trace'])) {
 
-         $info .= "\n[bold_white] ~ Stacktrace\n";
+         $info .= "[bold_white] ~ Stacktrace\n";
 
          foreach ($error['context']['trace'] as $trace) { 
 
@@ -168,13 +182,31 @@ $cli->doCommand('error', function() {
                $file = $trace['file'];
                $line = $trace['line'];
 
-               $info .= "[bold_white]   Dentro de [bold_blue]$file ";
+               $info .= "   Dentro de [bold_blue]$file ";
                $info .= "[bold_white]en la linea [bold_blue]$line\n";
             }
          }
+
+         unset($error['context']['trace']);
       }
 
       StandardIO::output($info);
+
+      if(!empty($error['context'])) {
+         StandardIO::output(" ~ Contexto\n");
+         $context = explode("\n", var_export($error['context'], true));
+         
+         array_shift($context);
+
+         foreach ($context as $line) {
+            $line = str_replace(' => ', ' [bold_yellow]=>[bold_green] ', $line);
+            $line = substr($line, 0, -1);
+
+            if(!preg_match('/(.*)\)(.*)/', $line))
+               StandardIO::output(" [bold_white]$line");
+         }
+      }
+
       return;         
    }
 
@@ -192,7 +224,7 @@ $cli->doCommand('error', function() {
    }
 
    $errors  = LogManager::getArrayLog();
-   $list = " ~ Registro de errores\n";
+   StandardIO::output("\n ~ Registro de errores");
 
    $counter = 0;
    foreach ($errors as $error) {
@@ -205,13 +237,13 @@ $cli->doCommand('error', function() {
       $date = TimeDiff::getTimeAgo($error['date']);
       $message = substr($error['message'], 0, 60);
 
-      $list .= "[bold_white]   ($id) - Hace $date\n   [bold_red]$message...\n";
+      StandardIO::output("\n[bold_white]   [" . ucfirst($error['level']) . "]");
+      StandardIO::output("   $id - Hace $date");
+      StandardIO::output("   $message...", $error['level']);
       $counter++;
    }
 
-   $list .= "   [back_white] $counter Errores en total ";
-
-   StandardIO::output($list);
+   StandardIO::output("\n   [back_white] $counter Errores en total \n");
 });
 
 /**

@@ -6,31 +6,33 @@
 
    class StandardIO {
 
-      public static function output( $string, $type = null, $new_line = "\n" ) {
+      public static function output( $string, $type = null, $new_line=PHP_EOL ) {
          
          $color = '';
-         switch ( $type ) {
-            case 'ERROR':
+         switch (strtolower($type)) {
+            case 'emergency':
+            case 'alert':
                $color = '[back_red]';
                break;
 
-            case 'INFO':
-               $color = '[bold_cyan]';
+            case 'error':
+            case 'critical':
+               $color = '[bold_red]';
                break;
 
-            case 'SUCCESS':
-               $color = '[bold_green]';
-               break;
-
-            case 'EMPASIS':
-               $color = '[back_green]';
-               break;
-
-            case 'WARNING':
+            case 'warning':
                $color = '[bold_yellow]';
                break;
 
-            case 'FINAL':
+            case 'notice':
+               $color = '[bold_green]';
+               break;
+
+            case 'info':
+               $color = '[bold_cyan]';
+               break;
+
+            case 'debug':
                $color = '[back_white]';
                break;
 
@@ -39,7 +41,6 @@
                break; 
          }
 
-         //error_log(  );
          echo Colors::paint( $color . $string . '[reset]' . $new_line );
       }
 

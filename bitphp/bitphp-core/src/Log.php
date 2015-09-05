@@ -31,7 +31,8 @@
          $identifier  = md5($date . rand(0, 9999));
 
          $log = [
-              'date' => $date
+              'level' => $level
+            , 'date' => $date
             , 'message' => $message
             , 'id' => $identifier
             , 'context' => $context
@@ -46,35 +47,35 @@
          return $identifier;
       }
 
-      public static function emergency($message, $context) {
+      public static function emergency($message, $context=array()) {
          return self::record('emergency', $message, $context);
       }
 
-      public static function alert($message, $context) {
+      public static function alert($message, $context=array()) {
          return self::record('alert', $message, $context);
       }
 
-      public static function critical($message, $context) {
+      public static function critical($message, $context=array()) {
          return self::record('critical', $message, $context);
       }
 
-      public static function error($message, $context) {
+      public static function error($message, $context=array()) {
          return self::record('error', $message, $context);
       }
 
-      public static function warning($message, $context) {
+      public static function warning($message, $context=array()) {
          return self::record('warning', $message, $context);
       }
 
-      public static function notice($message, $context) {
+      public static function notice($message, $context=array()) {
          return self::record('notice', $message, $context);
       }
 
-      public static function info($message, $context) {
+      public static function info($message, $context=array()) {
          return self::record('info', $message, $context);
       }
 
-      public static function debug($message, $context) {
+      public static function debug($message, $context=array()) {
          return self::record('debug', $message, $context);
       }
    }
