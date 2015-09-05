@@ -44,9 +44,12 @@ $cli->doCommand('environment', function(){
    }
 
    StandardIO::output(' ~ Trabajando en entorno [bold_green]' . $environment['current']);
-   StandardIO::output(' ~ Entornos disponibles: ');
-   foreach ($environment['available'] as $env) {
-      StandardIO::output('      - ' . $env);
+   
+   if(!empty($environment['available'])) {
+      StandardIO::output(' ~ Entornos disponibles: ');
+      foreach ($environment['available'] as $env) {
+         StandardIO::output('      - ' . $env);
+      }
    }
 });
 
