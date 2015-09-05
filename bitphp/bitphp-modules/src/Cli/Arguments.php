@@ -11,7 +11,6 @@
 
       public static function get($index) {
          $arguments = $_SERVER['argv'];
-         array_shift($arguments);
 
          if(!is_numeric($index)) {
             $index = array_search($index, $arguments);
@@ -27,7 +26,6 @@
 
       public static function flag($flag) {
          $arguments = $_SERVER['argv'];
-         array_shift($arguments);
 
          $large_flag = array_search("--$flag", $arguments);
          $short_flag = array_search("-$flag[0]", $arguments);
