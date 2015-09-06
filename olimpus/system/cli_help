@@ -27,7 +27,7 @@
    [bold_white]php dummy migrations up db/table    [white]- Ejecuta las migraciones indicadas
    [bold_white]php dummy migrations down db/table  [white]- Deshace las migraciones indicadas
    
-[bold_green]Environment management
+ [bold_green]Environment management
    [bold_white]php dummy environment                    [white]- Lista los entornos disponibles
    [bold_white]php dummy environment --switch,-s        [white]- Cambia al siguiente entorno
    [bold_white]php dummy environment --switch,-s <name> [white]- Cambia al entorno indicado

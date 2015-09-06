@@ -1,6 +1,6 @@
 <?php
 
-   namespace Bitphp\Modules\Database;
+   namespace Bitphp\Modules\Database\Abstracts;
 
    use \Bitphp\Core\Config;
 

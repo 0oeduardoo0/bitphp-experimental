@@ -1,6 +1,6 @@
-olimpus/bitphp-trash/
-olimpus/cache/
-olimpus/log/
-app/
-config/
-index.php
+/vendor
+/olimpus/cache
+/olimpus/log
+/config
+composer.phar
+composer.lock

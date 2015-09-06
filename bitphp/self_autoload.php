@@ -172,5 +172,7 @@ $bitphp_loader->add('Bitphp\Cli', 'bitphp/bitphp-cli/src');
 $bitphp_loader->add('App\Models', 'app/models');
 $bitphp_loader->add('App\Controllers', 'app/controllers');
 $bitphp_loader->add('App\Migrations', 'app/migrations');
+$bitphp_loader->add('App\Events', 'app/events');
+$bitphp_loader->add('App\Listeners', 'app/listeners');
 
 return $bitphp_loader;

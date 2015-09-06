@@ -33,7 +33,9 @@
             "Bitphp\\Exceptions\\": "bitphp/bitphp-exceptions/src",
             "App\\Models\\": "app/models",
             "App\\Controllers\\": "app/controllers",
-            "App\\Migrations\\": "app/migrations"
+            "App\\Migrations\\": "app/migrations",
+            "App\\Events\\": "app/events",
+            "App\\Listeners\\": "app/listeners"
         }
     },
     "config": {

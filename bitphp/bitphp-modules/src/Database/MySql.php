@@ -3,7 +3,7 @@
    namespace Bitphp\Modules\Database;
 
    use \PDO;
-   use \Bitphp\Modules\Database\Provider;
+   use \Bitphp\Modules\Database\Abstracts\Provider;
 
    /**
     *   Proporciona una capa de abstracción para una conexión 

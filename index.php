@@ -16,8 +16,4 @@ $server->doGet('/', function() {
    Medusa::quick('welcome');
 });
 
-$server->doGet('/test', function(){
-   Log::notice('La anterior era un informe, esta si es una notificacion xD');
-});
-
 $server->run();

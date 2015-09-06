@@ -37,7 +37,7 @@
 
          $file = Globals::get('base_path') . "/config/$file.$mime";
 
-         if( file_exists($file) ) {
+         if(file_exists($file)) {
             $content = file_get_contents($file);
             #usa la variable global para no cargar el archivo una y otra vez
             $params = json_decode($content, true);
